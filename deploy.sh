@@ -3,8 +3,6 @@
 
 cd /var/www/html
 
-chmod 755 crawl-ls.sh
-
 # コンパイル済キャッシュをクリア
 artisan clear-compiled
 
@@ -14,11 +12,11 @@ composer install --no-dev
 # 環境設定をコピー
 cp .env.production .env
 
-# DBマイグレーション
-php artisan migrate --force
-
 # /configの設定情報を1ファイルにまとめておく
 php artisan config:cache
+
+# DBマイグレーション
+php artisan migrate --force
 
 # route情報をまとめておく CLOSUREがあると使用できない
 php artisan route:cache
