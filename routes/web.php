@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,17 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+// ログインしていたら必要ない（ダッシュボードに転送される＝ゲスト専用）ページ
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/', 'IndexController@index')->name('welcome');
 
-    Auth::routes(['register' => false]);
+    // Auth::routes(['register' => false]);
 
     Route::get('auth/{provider}/login', 'Auth\SocialiteController@login')->name('auth.social.login');
     Route::get('auth/{provider}/callback', 'Auth\SocialiteController@callback')->name('auth.social.callback');
     Route::post('auth/{provider}/register', 'Auth\SocialiteController@register')->name('auth.social.register');
 });
 
+// ログインしていないと利用できない（ログインページに転送される）ページ
 Route::group([/*'middleware' => ['auth']*/], function () {
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
     Route::get('/configuration', 'ConfigurationController@show')->name('configuration.show');
