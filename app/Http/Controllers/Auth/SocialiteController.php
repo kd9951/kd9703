@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -81,10 +82,18 @@ class SocialiteController extends BaseController
             $this->redirectTo = $this->redirectToAfterLogin;
         }
 
-        $auth_user = new User($account);
+        if ($account->oauth_access_token != $user->token) {
+            $account->oauth_access_token  = $user->token;
+            $account->oauth_access_secret = $user->tokenSecret;
+        }
+
+        $account->last_logged_in_at = Carbon::now()->format('Y-m-d H:i:s');
+
+        $AccountResource->upsert($account);
 
         // Laravel ログイン処理
         // 認証はSNSで済んでいるのでLaravelでは認証しない
+        $auth_user = new User($account);
         $this->guard()->login($auth_user);
 
         return $this->sendLoginResponse($request);

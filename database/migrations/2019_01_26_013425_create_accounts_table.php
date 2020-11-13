@@ -21,8 +21,8 @@ class CreateAccountsTable extends Migration
             $table->tinyInteger('login_method')->comment('ログイン方法')->nullable();
             $table->string('login_id')->nullable()->comment('ID');
             $table->string('password')->nullable()->comment('PW');
-            $table->string('oauth_access_token')->nullable()->comment('ソーシャルログインで得たトークン（認証後に利用すること無いので要らないはず）');
-            $table->string('oauth_access_secret')->nullable()->comment('ソーシャルログインで得たトークン（認証後に利用すること無いので要らないはず）');
+            $table->text('oauth_access_token')->nullable()->comment('ソーシャルログインで得たトークン（認証後に利用すること無いので要らないはず）');
+            $table->text('oauth_access_secret')->nullable()->comment('ソーシャルログインで得たトークン（認証後に利用すること無いので要らないはず）');
 
             $table->timestamp('last_logged_in_at')->nullable();
 
@@ -30,9 +30,9 @@ class CreateAccountsTable extends Migration
 
             $table->text('description')->comment('紹介文')->nullable();
 
-            $table->string('web_url1')->comment('WEBサイト')->nullable();
-            $table->string('web_url2')->comment('WEBサイト')->nullable();
-            $table->string('web_url3')->comment('WEBサイト')->nullable();
+            $table->text('web_url1')->comment('WEBサイト')->nullable();
+            $table->text('web_url2')->comment('WEBサイト')->nullable();
+            $table->text('web_url3')->comment('WEBサイト')->nullable();
 
             $table->text('img_thumnail_url')->comment('サムネイル画像のURL')->nullable();
             $table->text('img_cover_url')->comment('サムネイル画像のURL')->nullable();

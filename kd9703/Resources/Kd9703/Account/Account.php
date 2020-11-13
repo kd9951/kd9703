@@ -14,37 +14,46 @@ class Account implements AccountInterface
 {
     use EloquentAdapter;
 
+    const COLS_REQUIRED = [
+        'account_id',
+        'login_method',
+    ];
+
+    const COLS_OPTION = [
+        'username',
+        'fullname',
+        'login_id',
+        'password',
+        'oauth_access_token',
+        'oauth_access_secret',
+        'last_logged_in_at',
+        'prefecture',
+        'description',
+        'web_url1',
+        'web_url2',
+        'web_url3',
+        'img_thumnail_url',
+        'img_cover_url',
+        'score',
+        'total_post',
+        'total_follow',
+        'total_follower',
+        'last_posted_at',
+        'total_likes',
+        'reviewed_at',
+        'is_private',
+        'is_salon_account',
+    ];
+
     /**
      * @param Owner $owner
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity
     {
         $eloquent = $this->getEloquent($media, 'Account');
-        $account  = $eloquent->select([
-            'account_id',
-            'username',
-            'fullname',
-            'login_method',
-            'login_id',
-            'password',
-            'prefecture',
-            'web_url1',
-            'web_url2',
-            'web_url3',
-            'img_thumnail_url',
-            'img_cover_url',
-            'score',
-            'total_post',
-            'total_follow',
-            'total_follower',
-            'total_likes',
-            'last_posted_at',
-            'reviewed_at',
-            'is_private',
-            'is_salon_account',
-            'hidden_from_auto_follow',
-            'hidden_from_search',
-        ])->where('account_id', $account_id)->first();
+        $account  = $eloquent
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->where('account_id', $account_id)->first();
 
         if (!$account) {
             return null;
@@ -75,62 +84,17 @@ class Account implements AccountInterface
         $model = $eloquent->find($account->account_id);
         $model = $model ?: $eloquent;
 
-        $data = array_merge([
-            'account_id'   => $account->account_id,
-            'login_method' => $account->login_method,
-        ], array_filter([
-            'login_id'            => $account->login_id,
-            'password'            => $account->password,
-            'oauth_access_token'  => $account->login_id,
-            'oauth_access_secret' => $account->password,
-            'username'            => $account->username,
-            'fullname'            => $account->fullname,
-            'prefecture'          => $account->prefecture,
-            'web_url1'            => $account->web_url1,
-            'web_url2'            => $account->web_url2,
-            'web_url3'            => $account->web_url3,
-            'img_thumnail_url'    => $account->img_thumnail_url,
-            'img_cover_url'       => $account->img_cover_url,
-            'score'               => $account->score,
-            'total_post'          => $account->total_post,
-            'total_follow'        => $account->total_follow,
-            'total_follower'      => $account->total_follower,
-            'total_likes'         => $account->total_likes,
-            'last_posted_at'      => $account->last_posted_at,
-            'reviewed_at'         => $account->reviewed_at,
-            'is_private'          => $account->is_private,
-        ]));
-        foreach ($data as $key => $value) {
-            $model->$key = $value;
+        foreach (self::COLS_REQUIRED as $key) {
+            $model->$key = $account->$key;
+        }
+        foreach (self::COLS_OPTION as $key) {
+            if (!is_null($account->$key)) {
+                $model->$key = $account->$key;
+            }
         }
         $model->save();
 
-        return new AccountEntity([
-            'media'                   => Media::TWITTER,
-            'account_id'              => $model->account_id,
-            'username'                => $model->username,
-            'fullname'                => $model->fullname,
-            'login_method'            => $model->login_method,
-            'login_id'                => $model->login_id,
-            'password'                => $model->password,
-            'prefecture'              => $model->prefecture,
-            'web_url1'                => $model->web_url1,
-            'web_url2'                => $model->web_url2,
-            'web_url3'                => $model->web_url3,
-            'img_thumnail_url'        => $model->img_thumnail_url,
-            'img_cover_url'           => $model->img_cover_url,
-            'score'                   => $model->score,
-            'total_post'              => $model->total_post,
-            'total_follow'            => $model->total_follow,
-            'total_follower'          => $model->total_follower,
-            'total_likes'             => $model->total_likes,
-            'last_posted_at'          => $model->last_posted_at,
-            'reviewed_at'             => $model->reviewed_at,
-            'is_salon_account'        => $model->is_salon_account,
-            'hidden_from_auto_follow' => $model->hidden_from_auto_follow,
-            'hidden_from_search'      => $model->hidden_from_search,
-            'is_private'              => $model->is_private,
-        ]);
+        return $account;
     }
 
     /**
@@ -148,34 +112,15 @@ class Account implements AccountInterface
             return;
         }
 
-        $eloquent = $this->getEloquent(Media::TWITTER(), 'Account');
+        $eloquent = $this->getEloquent($account->media, 'Account');
 
         $model = $eloquent->find($account->account_id);
         $model = $model ?: $eloquent;
 
-        foreach (array_filter([
-            'account_id'              => $account->account_id,
-            'username'                => $account->username,
-            'fullname'                => $account->fullname,
-            'prefecture'              => $account->prefecture,
-            'web_url1'                => $account->web_url1,
-            'web_url2'                => $account->web_url2,
-            'web_url3'                => $account->web_url3,
-            'img_thumnail_url'        => $account->img_thumnail_url,
-            'img_cover_url'           => $account->img_cover_url,
-            'score'                   => $account->score,
-            'total_post'              => $account->total_post,
-            'total_follow'            => $account->total_follow,
-            'total_follower'          => $account->total_follower,
-            'total_likes'             => $account->total_likes,
-            'last_posted_at'          => $account->last_posted_at,
-            'reviewed_at'             => $account->reviewed_at,
-            'is_private'              => $account->is_private,
-            'is_salon_account'        => $account->is_salon_account,
-            'hidden_from_auto_follow' => $account->hidden_from_auto_follow,
-            'hidden_from_search'      => $account->hidden_from_search,
-        ], function ($v) {return !is_null($v);}) as $key => $value) {
-            $model->$key = $value;
+        foreach (array_merge(self::COLS_REQUIRED, self::COLS_OPTION) as $key) {
+            if (!is_null($account->$key)) {
+                $model->$key = $account->$key;
+            }
         }
 
         $model->save();
