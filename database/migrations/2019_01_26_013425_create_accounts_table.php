@@ -61,17 +61,15 @@ class CreateAccountsTable extends Migration
             $table->primary('account_id');
             $table->unique('username');
 
-            $table->index('score');
-            $table->index('total_post');
-            $table->index('total_follow');
-            $table->index('total_follower');
+            $table->index(['is_salon_account', 'score']);
+            $table->index(['is_salon_account', 'total_post']);
+            $table->index(['is_salon_account', 'total_follow']);
+            $table->index(['is_salon_account', 'total_follower']);
 
-            $table->index('hidden_from_auto_follow');
-            $table->index('hidden_from_search');
+            $table->index(['is_salon_account', 'hidden_from_auto_follow']);
+            $table->index(['is_salon_account', 'hidden_from_search']);
 
             $table->index('reviewed_at');
-            $table->index('created_at');
-            $table->index('updated_at');
         });
     }
 
