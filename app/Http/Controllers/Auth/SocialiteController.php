@@ -81,6 +81,28 @@ class SocialiteController extends BaseController
             $account->oauth_access_secret = $user->tokenSecret;
         }
 
+        // ユーザー情報を現在値に（RegistAccountと処理がかぶっているし、ちょっと足りない）
+        foreach ([
+            'username'         => $user->getNickname(),
+            'fullname'         => $user->getName(),
+            // 'prefecture'          => $user[''],
+            'web_url1'         => $user['entities']['url']['urls'][0]['expanded_url'] ?? null,
+            'web_url2'         => $user['entities']['url']['urls'][1]['expanded_url'] ?? null,
+            'web_url3'         => $user['entities']['url']['urls'][2]['expanded_url'] ?? null,
+            'img_thumnail_url' => $user['profile_image_url_https'] ?? null,
+            'img_cover_url'    => $user['profile_background_image_url_https'] ?? null,
+            'total_post'       => $user['statuses_count'] ?? null,
+            'total_follow'     => $user['friends_count'] ?? null,
+            'total_follower'   => $user['followers_count'] ?? null,
+            'total_likes'      => $user['favourites_count'] ?? null,
+            'last_posted_at'   => ($user['status']['created_at'] ?? null) ? date('Y-m-d H:i:s', strtotime($user['status']['created_at'])) : null,
+            'is_private'       => $user['protected'] ?? null,
+        ] as $key => $value) {
+            if (!is_null($value)) {
+                $account->$key = $value;
+            }
+        }
+
         $account->last_logged_in_at = Carbon::now()->format('Y-m-d H:i:s');
 
         $AccountResource->upsert($account);
@@ -104,7 +126,7 @@ class SocialiteController extends BaseController
         SocialiteUser $user,
         RegistAccount $RegistAccount
     ): Account {
-        
+
         $account = $RegistAccount([
             'twitter_account_id' => $user->getId(),
             'token'              => $user->token ?? null,
