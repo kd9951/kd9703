@@ -3,6 +3,7 @@ namespace Kd9703\Resources\Kd9703\Account;
 
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account as AccountEntity;
+use Kd9703\Entities\Media\Accounts;
 use Kd9703\Entities\Owner\Owner;
 use Kd9703\Resources\Interfaces\Account\Account as AccountInterface;
 use Kd9703\Resources\Kd9703\Tools\EloquentAdapter;
@@ -46,6 +47,15 @@ class Account implements AccountInterface
     ];
 
     /**
+     * 特定のアカウントに依存しない情報のクローリングなどに使うアカウント
+     */
+    public function getSystemAccount(?Media $media): ?AccountEntity
+    {
+        // 定数の注入方法があんまり考えられてない
+        return $this->getOne($media, '1315175613351641088');
+    }
+
+    /**
      * @param Owner $owner
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity
@@ -63,6 +73,26 @@ class Account implements AccountInterface
 
         return new AccountEntity($account);
     }
+
+    /**
+     * 最近更新されていないアカウント
+     */
+    public function getOlds(Media $media, int $limit): Accounts
+    {
+        $eloquent = $this->getEloquent($media, 'Account');
+        $accounts  = $eloquent
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->orderBy('reviewed_at', 'asc')
+            ->take($limit)
+            ->get()->toArray();
+
+        foreach($accounts as $idx => $account){
+            $accounts[$idx]['media'] = $media;
+        }
+
+        return new Accounts($accounts);
+    }
+
 
     /**
      * ownerの自分のアカウントとしてを登録する

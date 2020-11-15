@@ -36,6 +36,7 @@ class MediaFactory
             \Kd9703\Resources\Interfaces\Job\Job::class             => \Kd9703\Resources\Kd9703\Job\Job::class,
 
             /////////////////////////////////////////////////////////////////////////////////////
+
             \Crawler\HttpClientInterface::class           => null,
             \Crawler\ParserInterface::class               => null,
             \Kd9703\Logger\Interfaces\SystemLogger::class => \Kd9703\Logger\SystemLogger::class,
@@ -43,8 +44,11 @@ class MediaFactory
         ],
 
         Media::TWITTER => [
-            \Crawler\HttpClientInterface::class => \Crawler\HttpClients\Goutte::class,
-            \Crawler\ParserInterface::class     => \Crawler\Parsers\DomCrawler::class,
+            \Crawler\HttpClientInterface::class => \Crawler\HttpClients\TwitterApi::class,
+            \Crawler\ParserInterface::class     => \Crawler\Parsers\Json::class,
+
+            \Kd9703\MediaAccess\Interfaces\GetUsers::class => \Kd9703\MediaAccess\Twitter\GetUsers::class,
+            \Kd9703\MediaAccess\Interfaces\GetProfile::class => \Kd9703\MediaAccess\Twitter\GetProfile::class,
         ],
     ];
 

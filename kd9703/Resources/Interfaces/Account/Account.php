@@ -3,6 +3,7 @@ namespace Kd9703\Resources\Interfaces\Account;
 
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account as AccountEntity;
+use Kd9703\Entities\Media\Accounts;
 use Kd9703\Entities\Owner\Owner;
 
 /**
@@ -11,9 +12,18 @@ use Kd9703\Entities\Owner\Owner;
 interface Account
 {
     /**
+     * 特定のアカウントに依存しない情報のクローリングなどに使うアカウント
+     */
+    public function getSystemAccount(?Media $media): ?AccountEntity;
+
+    /**
      * @param int $account_id
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity;
+    /**
+     * 最近更新されていないアカウント
+     */
+    public function getOlds(Media $media, int $limit): Accounts;
 
     /**
      * ownerの自分のアカウントとしてを登録する
