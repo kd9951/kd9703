@@ -5,6 +5,11 @@ namespace Kd9703;
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account;
 
+/**
+ * アプリ内で指定しているインターフェースとそのアプリ内の実体との対応表
+ * あくまで参考情報であって、完璧じゃない。
+ * 実際にどうやってインスタンスを初期化してインジェクトするかはフレームワークのしごと。
+ */
 class MediaFactory
 {
     const MEDIA = [

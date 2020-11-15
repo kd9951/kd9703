@@ -47,8 +47,8 @@ class Usecase
     public function __construct(
         Random $random,
         Timer $timer,
-        SystemLogger $systemLogger,
-        OwnerLogger $ownerLogger
+        ?SystemLogger $systemLogger,
+        ?OwnerLogger $ownerLogger
     ) {
         $this->random       = $random;
         $this->timer        = $timer;

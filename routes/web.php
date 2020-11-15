@@ -25,7 +25,7 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 // ログインしていないと利用できない（ログインページに転送される）ページ
-Route::group([/*'middleware' => ['auth']*/], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 

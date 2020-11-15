@@ -62,12 +62,6 @@ class SocialiteController extends BaseController
 
         $user = $socialite->user() ?? null;
 
-        // dd($user, $request->all(), [
-        //     'oauth_provider'     => $provider,
-        //     'account_id'         => $user->getId(),
-        //     'oauth_access_token' => $user->token,
-        // ]);
-
         // 該当する User を取得
         $account = $AccountResource->getOne(Media::TWITTER(), $user->getId());
 
