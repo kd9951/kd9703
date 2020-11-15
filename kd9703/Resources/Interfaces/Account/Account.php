@@ -15,10 +15,16 @@ interface Account
      * @param int $account_id
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity;
+
     /**
      * 最近更新されていないアカウント
      */
     public function getOlds(Media $media, int $limit): Accounts;
+
+    /**
+     * 人気のアカウント
+     */
+    public function getPops(Media $media, int $limit): Accounts;
 
     /**
      * ownerの自分のアカウントとしてを登録する

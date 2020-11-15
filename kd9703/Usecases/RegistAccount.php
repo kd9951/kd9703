@@ -85,6 +85,13 @@ final class RegistAccount extends Usecase
             }
         }
 
+        // 改めてプロフィール情報を取得
+        // try {
+        //     $account = $GetProfile
+        // } catch (\RuntimeException $e) {
+
+        // }
+
         $this->resources['Transaction']->beginTransaction();
 
         $account = ($this->usecases['SetGlobalAccountRegulation'])(['account' => $account]);

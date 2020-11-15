@@ -71,19 +71,38 @@ class Account implements AccountInterface
     public function getOlds(Media $media, int $limit): Accounts
     {
         $eloquent = $this->getEloquent($media, 'Account');
-        $accounts  = $eloquent
+        $accounts = $eloquent
             ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
             ->orderBy('reviewed_at', 'asc')
             ->take($limit)
             ->get()->toArray();
 
-        foreach($accounts as $idx => $account){
+        foreach ($accounts as $idx => $account) {
             $accounts[$idx]['media'] = $media;
         }
 
         return new Accounts($accounts);
     }
 
+    /**
+     * 人気のアカウント
+     */
+    public function getPops(Media $media, int $limit): Accounts
+    {
+        $eloquent = $this->getEloquent($media, 'Account');
+        $accounts = $eloquent
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->where('is_salon_account', true)
+            ->orderBy('score', 'desc')
+            ->take($limit)
+            ->get()->toArray();
+
+        foreach ($accounts as $idx => $account) {
+            $accounts[$idx]['media'] = $media;
+        }
+
+        return new Accounts($accounts);
+    }
 
     /**
      * ownerの自分のアカウントとしてを登録する
