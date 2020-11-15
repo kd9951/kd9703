@@ -1,13 +1,12 @@
 <?php
 namespace Crawler\HttpClients;
 
-require_once __DIR__ . '/UltimateOAuth.php';
+// require_once __DIR__ . '/UltimateOAuth.php';
 
 use Crawler\HttpClientInterface;
 use mpyw\Cowitter\Client;
 use mpyw\Cowitter\HttpException;
 use mpyw\Cowitter\Response;
-use UltimateOAuthRotate;
 
 /**
  * Cowitterを利用したTwitterAPI
@@ -313,7 +312,7 @@ class TwitterApi implements HttpClientInterface
      */
     public function getContentAs(string $type)
     {
-        switch(strtolower($type)) {
+        switch (strtolower($type)) {
             case 'object':
             case 'json.object':
                 return json_decode($this->response_raw_body, false);
