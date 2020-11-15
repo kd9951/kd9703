@@ -6,6 +6,18 @@
 .account-link {
     color: #3c4b64;
 }
+.account-link .name{
+    overflow: hidden;
+}
+.account-link .username{
+    font-weight: bold;
+    font-size: 80%;
+}
+.account-link .fullname{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .account-link:hover {
     background-color: #e0f0ff;
 }
@@ -33,13 +45,13 @@
                 <table class="table table-hover">
                     <tbody>
                         @foreach($popular_accounts as $account)
-                        <a class="account-link d-flex align-items-center mb-3" href="http://twitter.com/{{$account->username}}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <a class="account-link d-flex align-items-center mb-3" href="http://twitter.com/{{$account->username}}">
                             @if($account->img_thumnail_url)
                                 <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
                             @endif
-                            <div class="pr-3">
-                                <small><b>{{ $account->username }}</b></small><br>
-                                {{ $account->fullname }}<br>
+                            <div class="name pr-3">
+                                <div class="username">{{ $account->username }}</div>
+                                <div class="fullname">{{ $account->fullname }}</div>
                                 💖{{ number_format($account->total_likes) }} 😊{{ number_format($account->total_follower) }}
                             </div>
                         </a>
