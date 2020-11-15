@@ -47,15 +47,6 @@ class Account implements AccountInterface
     ];
 
     /**
-     * 特定のアカウントに依存しない情報のクローリングなどに使うアカウント
-     */
-    public function getSystemAccount(?Media $media): ?AccountEntity
-    {
-        // 定数の注入方法があんまり考えられてない
-        return $this->getOne($media, '1315175613351641088');
-    }
-
-    /**
      * @param Owner $owner
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity

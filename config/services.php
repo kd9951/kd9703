@@ -31,8 +31,11 @@ return [
     ],
 
     'twitter' => [
-        'client_id'     => env('TWITTER_API_CUNSUMER_KEY'),
-        'client_secret' => env('TWITTER_API_CONSUMER_SECRET'),
-        'redirect'      => env('TWITTER_CALLBACK_URL'),
+        'owner_twitter_id' => env('OWNER_TWITTER_ID'),
+        'client_id'        => env('TWITTER_API_CUNSUMER_KEY'),
+        'client_secret'    => env('TWITTER_API_CONSUMER_SECRET'),
+        // 'access_token'        => env('TWITTER_API_ACCESS_TOKEN'),
+        // 'access_token_secret' => env('TWITTER_API_ACCESS_TOKEN_SECRET'),
+        'redirect'         => env('TWITTER_CALLBACK_URL'),
     ],
 ];

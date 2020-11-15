@@ -12,11 +12,6 @@ use Kd9703\Entities\Owner\Owner;
 interface Account
 {
     /**
-     * 特定のアカウントに依存しない情報のクローリングなどに使うアカウント
-     */
-    public function getSystemAccount(?Media $media): ?AccountEntity;
-
-    /**
      * @param int $account_id
      */
     public function getOne(?Media $media, string $account_id): ?AccountEntity;

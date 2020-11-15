@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Crawler\Support\Random;
 use Crawler\Support\Timer;
 use Kd9703\Constants\Media;
+use Kd9703\Entities\Media\Account as AccountEntity;
 use Kd9703\Logger\Interfaces\OwnerLogger;
 use Kd9703\Logger\Interfaces\SystemLogger;
 use Kd9703\MediaAccess\Interfaces\GetUsers;
@@ -44,19 +45,15 @@ final class UpdateUsers extends Usecase
     /**
      * 実行
      */
-    public function exec(int $limit_sec): bool
+    public function exec(AccountEntity $account, int $limit_sec): bool
     {
         $started_at = Carbon::now()->format('Y-m-d H:i:s');
 
         $this->timer->start('UpdateUsers', $limit_sec * 1000);
 
-        $account = $this->resources['Account']->getSystemAccount(Media::TWITTER());
-
-        $this->MediaBinder->bind($account);
-
         $count = 0;
         while ($this->timer->remains('UpdateUsers')) {
-            $target_accounts = $this->resources['Account']->getOlds(Media::TWITTER(), self::BULK_UNIT);
+            $target_accounts = $this->resources['Account']->getOlds($account->media, self::BULK_UNIT);
 
             $new_accounts = $this->mediaAccesses['GetUsers']([
                 'account'         => $account,
