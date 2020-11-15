@@ -104,6 +104,7 @@ class SocialiteController extends BaseController
         SocialiteUser $user,
         RegistAccount $RegistAccount
     ): Account {
+        
         $account = $RegistAccount([
             'twitter_account_id' => $user->getId(),
             'token'              => $user->token ?? null,

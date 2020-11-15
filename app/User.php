@@ -39,7 +39,7 @@ class User extends Authenticatable
     /**
      * @return mixed
      */
-    public function getAccount(): Account
+    public function getAccount(): ?Account
     {
         return $this->account;
     }
