@@ -23,7 +23,7 @@ final class SetGlobalAccountRegulation extends Usecase
         SystemLogger $systemLogger,
         OwnerLogger $ownerLogger
     ) {
-        parent::__construct($random, $timer, $systemLogger, $ownerLogger);
+        parent::__construct($random, $timer, null, null);
     }
 
     /**
