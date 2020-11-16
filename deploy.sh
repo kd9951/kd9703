@@ -1,13 +1,12 @@
 #!/bin/sh
 # デプロイ時にサーバー上で実行されるスクリプト
 
-cd /var/www/html
-
 # コンパイル済キャッシュをクリア
 artisan clear-compiled
 
 # vendor以下をインストールして autoloadファイルを最適化
 composer install --no-dev
+composer dump-autoload
 
 # 環境設定をコピー
 cp .env.production .env

@@ -17,6 +17,7 @@
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.4",
+        "mpyw/cowitter": "^1.0",
         "psr/log": "^1.1"
     },
     "require-dev": {
