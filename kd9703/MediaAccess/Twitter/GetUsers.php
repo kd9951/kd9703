@@ -89,7 +89,7 @@ class GetUsers extends MediaAccess implements GetUsersInterface
             }
 
             // スコア計算 ロジックは(他でも使うなら)切り離したほうが良い
-            $account['score'] = 0 + $account['total_follower'] + $account['total_likes'];
+            $account['score'] = 0 + $account['total_follower'] - $account['total_follow'] / 2;// + $account['total_likes'];
 
             $formatted[$account_id] = $account;
         }
