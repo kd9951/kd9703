@@ -12,7 +12,7 @@
     @endif
 
     @if($paginator->show_forward_dash)
-        <li class="page-item">><span class="page-link">……</span></li>
+        <li class="page-item"><span class="page-link">……</span></li>
     @endif
 
     @foreach($paginator->pages_forward as $page)
@@ -26,7 +26,7 @@
     @endforeach
 
     @if($paginator->show_backward_dash)
-        <li class="page-item">><span class="page-link">……</span></li>
+        <li class="page-item"><span class="page-link">……</span></li>
     @endif
 
     @if($paginator->show_last)
