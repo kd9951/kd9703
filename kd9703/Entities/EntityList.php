@@ -5,6 +5,7 @@ namespace Kd9703\Entities;
 use ArrayAccess;
 use Countable;
 use Iterator;
+use Kd9703\Entities\Paginate\Output as PaginateOutput;
 
 /**
  * 他のエンティティの配列
@@ -21,6 +22,10 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
      * @var array
      */
     protected $_array = [];
+    /**
+     * @var PaginateOutput
+     */
+    protected $_paginate = null;
 
     /**
      * @param array $keyvalues
@@ -36,6 +41,40 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
         foreach ($children as $index => $value) {
             $this->__set($index, $value);
         }
+    }
+
+    /**
+     * @param array $keyvalues
+     */
+    public function withPaginate(PaginateOutput $paginate): self
+    {
+        $this->setPaginate($paginate);
+
+        return $this;
+    }
+
+    /**
+     * @param array $keyvalues
+     */
+    public function setPaginate(PaginateOutput $paginate): void
+    {
+        $this->_paginate = $paginate;
+    }
+
+    /**
+     */
+    public function getPaginate(): PaginateOutput
+    {
+        return $this->_paginate ?: new PaginateOutput([
+            'total'        => $this->count(),
+            'per_page'     => null,
+            'current_page' => 1,
+            'last_page'    => 1,
+            'prev_page'    => null,
+            'next_page'    => null,
+            'from'         => 1,
+            'to'           => $this->count(),
+        ]);
     }
 
     /**

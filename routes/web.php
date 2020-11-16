@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
+    Route::get('/populars', 'PopularController@index')->name('populars.index');
+
     Route::get('/configuration', 'ConfigurationController@show')->name('configuration.show');
     Route::put('/configuration', 'ConfigurationController@update')->name('configuration.update');
 

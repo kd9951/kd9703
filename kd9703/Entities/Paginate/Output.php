@@ -80,4 +80,12 @@ class Output extends Entity
         $this->from         = 1;
         $this->to           = $this->total;
     }
+
+    /**
+     * @param int $max_buttons
+     */
+    public function getPaginator(int $max_buttons): Paginator
+    {
+        return new Paginator($this, $max_buttons);
+    }
 }

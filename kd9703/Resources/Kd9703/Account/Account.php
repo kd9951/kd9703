@@ -5,6 +5,8 @@ use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account as AccountEntity;
 use Kd9703\Entities\Media\Accounts;
 use Kd9703\Entities\Owner\Owner;
+use Kd9703\Entities\Paginate\Input as PaginateInput;
+use Kd9703\Entities\Paginate\Output as PaginateOutput;
 use Kd9703\Resources\Interfaces\Account\Account as AccountInterface;
 use Kd9703\Resources\Kd9703\Tools\EloquentAdapter;
 
@@ -87,21 +89,30 @@ class Account implements AccountInterface
     /**
      * 人気のアカウント
      */
-    public function getPops(Media $media, int $limit): Accounts
+    public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts
     {
         $eloquent = $this->getEloquent($media, 'Account');
-        $accounts = $eloquent
+        $eloquent = $eloquent
             ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
             ->where('is_salon_account', true)
-            ->orderBy('score', 'desc')
-            ->take($limit)
-            ->get()->toArray();
+            ->orderBy('score', 'desc');
+
+        if ($paginateInput && $paginateInput->per_page) {
+            $collection     = $eloquent->paginate($paginateInput->per_page, ['*'], 'page', $paginateInput->page);
+            $paginateOutput = new PaginateOutput($collection);
+            $accounts       = $collection->toArray()['data'];
+
+        } else {
+            $accounts       = $accounts->get();
+            $paginateOutput = new PaginateOutput($accounts);
+            $accounts       = $accounts->toArray();
+        }
 
         foreach ($accounts as $idx => $account) {
             $accounts[$idx]['media'] = $media;
         }
 
-        return new Accounts($accounts);
+        return (new Accounts($accounts))->withPaginate($paginateOutput);
     }
 
     /**

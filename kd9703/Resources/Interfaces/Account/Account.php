@@ -4,7 +4,7 @@ namespace Kd9703\Resources\Interfaces\Account;
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account as AccountEntity;
 use Kd9703\Entities\Media\Accounts;
-use Kd9703\Entities\Owner\Owner;
+use Kd9703\Entities\Paginate\Input as PaginateInput;
 
 /**
  * アカウント
@@ -24,7 +24,7 @@ interface Account
     /**
      * 人気のアカウント
      */
-    public function getPops(Media $media, int $limit): Accounts;
+    public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts;
 
     /**
      * ownerの自分のアカウントとしてを登録する
