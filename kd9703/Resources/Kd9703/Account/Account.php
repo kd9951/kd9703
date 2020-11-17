@@ -99,11 +99,15 @@ class Account implements AccountInterface
     /**
      * 検索
      */
-    public function search(Media $media, ?string $keyword, ?PaginateInput $paginateInput = null): Accounts
+    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null): Accounts
     {
         $eloquent = $this->getEloquent($media, 'Account');
         $eloquent = $eloquent
             ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->where(function($q) {
+                $q->whereNull('hidden_from_search');
+                $q->orWhere('hidden_from_search', false);
+            })
             ->where('is_salon_account', true)
             ->orderBy('score', 'desc');
 
@@ -120,7 +124,7 @@ class Account implements AccountInterface
             $accounts       = $collection->toArray()['data'];
 
         } else {
-            $accounts       = $accounts->get();
+            $accounts       = $eloquent->get();
             $paginateOutput = new PaginateOutput($accounts);
             $accounts       = $accounts->toArray();
         }

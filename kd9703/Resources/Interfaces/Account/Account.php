@@ -29,7 +29,7 @@ interface Account
     /**
      * 検索
      */
-    public function search(Media $media, ?string $keyword, ?PaginateInput $paginateInput = null): Accounts;
+    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null): Accounts;
 
     /**
      * ownerの自分のアカウントとしてを登録する

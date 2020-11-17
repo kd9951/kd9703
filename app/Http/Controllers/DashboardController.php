@@ -18,7 +18,7 @@ class DashboardController extends BaseController
      * @param Account $AccountResource
      */
     public function index(
-        // TODO UseCaseであるべき
+        // TODO UseCaseであるべき]
         Account $AccountResource
     ) {
         $account = Auth::user()->getAccount();
@@ -29,7 +29,11 @@ class DashboardController extends BaseController
             'page'     => 1,
         ]));
 
+        $total_salon_accounts = $AccountResource->search($account->media)->count();
+
         return view('dashboard', [
+            'total_salon_accounts' => $total_salon_accounts,
+            // 'total_active_accounts' => $total_active_accounts,
             'popular_accounts' => $popular_accounts,
         ]);
     }

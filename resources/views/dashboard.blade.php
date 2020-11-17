@@ -5,6 +5,9 @@
 <style>
 .account-link {
     color: #3c4b64;
+    margin: 1.5rem -0.5rem -0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
 }
 .account-link .name{
     overflow: hidden;
@@ -14,6 +17,7 @@
     font-size: 80%;
 }
 .account-link .fullname{
+    font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -25,9 +29,87 @@
     min-width: 48px;
 }
 
+.specs > div {
+    font-size: 0.9em;
+}
 </style>
 
 <div class="container">
+
+    <div class="row">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-gradient-primary">
+                <div class="card-body card-body pb0 d-flex justify-content-between align-items-start">
+                    <div>
+                    <div class="text-value-lg">{{($total_salon_accounts??null) ? number_format($total_salon_accounts) : 'not available'}}</div>
+                    <div>確認サロンアカウント数</div>
+                    </div>
+                </div>
+                {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas class="chart chartjs-render-monitor" id="card-chart1" height="70" style="display: block;" width="256"></canvas>
+                </div> --}}
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-gradient-info">
+                <div class="card-body card-body pb0 d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-value-lg">{{($total_active_accounts??null) ? number_format($total_active_accounts) : 'not available'}}</div>
+                        <div>アクティブアカウント数</div>
+                    </div>
+                </div>
+                {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <canvas class="chart chartjs-render-monitor" id="card-chart2" height="70" width="256" style="display: block;"></canvas>
+                <div id="card-chart2-tooltip" class="c-chartjs-tooltip top" style="opacity: 0; left: 201.982px; top: 124.882px;"><div class="c-tooltip-header"><div class="c-tooltip-header-item">July</div></div><div class="c-tooltip-body"><div class="c-tooltip-body-item"><span class="c-tooltip-body-item-color" style="background-color: rgb(51, 153, 255);"></span><span class="c-tooltip-body-item-label">My First dataset</span><span class="c-tooltip-body-item-value">11</span></div></div></div></div> --}}
+            </div>
+        </div>
+
+            {{-- <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-gradient-warning">
+            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+            <div>
+            <div class="text-value-lg">9.823</div>
+            <div>Members online</div>
+            </div>
+            <div class="btn-group">
+            <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="c-icon">
+            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+            </svg>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+            </div>
+            </div>
+            <div class="c-chart-wrapper mt-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas class="chart chartjs-render-monitor" id="card-chart3" height="70" width="288" style="display: block;"></canvas>
+            </div>
+            </div>
+            </div> --}}
+
+            {{-- <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-gradient-danger">
+            <div class="card-body card-body pb-0 d-flex justify-content-between align-items-start">
+            <div>
+            <div class="text-value-lg">9.823</div>
+            <div>Members online</div>
+            </div>
+            <div class="btn-group">
+            <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="c-icon">
+            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+            </svg>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+            </div>
+            </div>
+            <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas class="chart chartjs-render-monitor" id="card-chart4" height="70" width="256" style="display: block;"></canvas>
+            </div>
+                </div>
+                </div> --}}
+
+    </div>
 
 <div class="row">
     <div class="col-md-6 col-xl-4">
@@ -66,16 +148,24 @@
                 </div>
                 <div>
                     @foreach($popular_accounts as $account)
-                    <a class="account-link d-flex align-items-center mt-3" href="http://twitter.com/{{$account->username}}">
-                        @if($account->img_thumnail_url)
-                            <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
-                        @endif
-                        <div class="name pr-3">
-                            <div class="username">{{ $account->username }}</div>
-                            <div class="fullname">{{ $account->fullname }}</div>
-                            💖{{ number_format($account->total_likes) }} 😊{{ number_format($account->total_follower) }}
-                        </div>
-                    </a>
+                        <a class="account-link d-flex" href="http://twitter.com/{{$account->username}}">
+                            @if($account->img_thumnail_url)
+                                <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
+                            @endif
+                            <div style="width: 100%">
+                                <div class="">
+                                    <div class="names">
+                                            <div class="username">{{ $account->username }}</div>
+                                            <div class="fullname">{{ $account->fullname }}</div>
+                                    </div>
+                                    <div class="specs mt-1 d-flex justify-content-end hide-md-down">
+                                        @if($account->prefecture)<div class="ml-2"><b>{{ Kd9703\Constants\Prefecture::TEXT_JPN[$account->prefecture->toValue()] }}</b></div>@endif
+                                        <div class="ml-2"><b>{{ number_format($account->total_follow) }}</b> フォロー中</div>
+                                        <div class="ml-2"><b>{{ number_format($account->total_follower) }}</b> フォロワー</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
