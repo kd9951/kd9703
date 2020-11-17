@@ -29,7 +29,7 @@ class PopularController extends BaseController
         $account = Auth::user()->getAccount();
 
         $popular_accounts = $AccountResource->getPops($account->media, new PaginateInput([
-            'per_page' => $request->perPage ?? 50,
+            'per_page' => $request->perPage ?? 30,
             'page'     => $request->page,
         ]));
 

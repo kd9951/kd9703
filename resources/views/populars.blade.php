@@ -14,6 +14,7 @@
     font-size: 80%;
 }
 .account-link .fullname{
+    font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -25,6 +26,14 @@
     min-width: 48px;
 }
 
+.account-link .description {
+    font-size: 0.9em;
+    color: var(--dark);
+}
+
+.specs > div {
+    font-size: 0.9em;
+}
 </style>
 
 <div class="container">
@@ -39,30 +48,30 @@
                         <div class="small text-muted">Popular Accounts</div>
                     </div>
                 </div>
-                <table class="table table-hover">
-                    <tbody>
-                    <tr>
                     @foreach($popular_accounts as $idx => $account)
-                        <td>
                         <a class="account-link d-flex align-items-center mt-3" href="http://twitter.com/{{$account->username}}">
                             @if($account->img_thumnail_url)
                                 <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
                             @endif
-                            <div class="name pr-3">
-                                <div class="username">{{ $account->username }}</div>
-                                <div class="fullname">{{ $account->fullname }}</div>
-                                💖{{ number_format($account->total_likes) }} 😊{{ number_format($account->total_follower) }}
+                            <div style="width: 100%">
+                                <div class="d-lg-flex justify-content-between"> {{-- 上段 --}}
+                                    <div class="names">
+                                            <div class="username">{{ $account->username }}</div>
+                                            <div class="fullname">{{ $account->fullname }}</div>
+                                    </div>
+                                    <div class="specs d-flex justify-content-end hide-md-down">
+                                        @if($account->prefecture)<div class="ml-2"><b>{{ Kd9703\Constants\Prefecture::TEXT_JPN[$account->prefecture->toValue()] }}</b></div>@endif
+                                        <div class="ml-2"><b>{{ number_format($account->total_follow) }}</b> フォロー中</div>
+                                        <div class="ml-2"><b>{{ number_format($account->total_follower) }}</b> フォロワー</div>
+                                        <div class="ml-2"><b>{{ number_format($account->total_post) }}</b> ポスト</div>
+                                    </div>
+                                </div>
+                                <div class="mt-1"> {{-- 下段 --}}
+                                        <div class="description">{{ $account->description }}</div>
+                                </div>
                             </div>
                         </a>
-                        </td>
-                    @if ($idx % 3 == 2)
-                    </tr>
-                    <tr>
-                    @endif
                     @endforeach
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
