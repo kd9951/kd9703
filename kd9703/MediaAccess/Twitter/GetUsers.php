@@ -21,16 +21,27 @@ class GetUsers extends MediaAccess implements GetUsersInterface
      */
     public function exec(Account $account, Accounts $target_accounts): Accounts
     {
+        if ($target_accounts->count() == 0) {
+            $this->system_logger->notice('No target given.');
+            return $target_accounts;
+        }
+
         $this->wait->waitNormal('twitter.GetUsers', 500, 1500);
 
         $url = self::ENDPOINT_USER;
-        $this->system_logger->mediaCall('GET', $url, [], [], $account);
-        $this->client->get($url, ['user_id' => implode(',', $target_accounts->pluck('account_id'))]);
-        $this->system_logger->mediaResponse('GET', $url, [], [], $this->client, $account);
+        $param = ['user_id' => implode(',', $target_accounts->pluck('account_id'))];
+        $this->system_logger->mediaCall('GET', $url, $param, [], $account);
+        $this->client->get($url, $param);
+        $this->system_logger->mediaResponse('GET', $url, $param, [], $this->client, $account);
 
         $response_json_array = $this->client->getContentAs('json.array');
 
-        $formatted = $this->format($response_json_array);
+        if(! is_array($response_json_array)) {
+            $this->system_logger->error('/users/lookup returns invalid json.', compact('url', 'param', 'response_json_array'));
+            $formatted = [];
+        } else {
+            $formatted = $this->format($response_json_array);
+        }
 
         $now = Carbon::now()->format('Y-m-d H:i:s');
         foreach ($target_accounts as $target_account) {
