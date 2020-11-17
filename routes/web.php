@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-    Route::get('/search', 'SearchController@index')->name('populars.index');
+    Route::get('/search', 'SearchController@index')->name('search');
     Route::get('/populars', 'PopularController@index')->name('populars.index');
 
     Route::get('/configuration', 'ConfigurationController@show')->name('configuration.show');
