@@ -36,6 +36,11 @@
 
 <div class="container">
 
+        {{-- アプリ利用者数
+        アプリアクティブ利用者数
+        アプリ利用拒否者数
+        プロフィール更新数 --}}
+
     <div class="row">
         <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-gradient-primary">
@@ -127,6 +132,24 @@
                             <label for="exampleInputEmail1">キーワード</label>
                             <input type="keyword" class="form-control" id="keyword" name="keyword">
                         </div>
+
+                        <div class=" mb-3">
+                            @foreach([
+                                '芸人 絵本作家',
+                                '吉本 芸人',
+                                '飲食店',
+                                'ヘアサロン',
+                                '経営して',
+                                'Youtuber',
+                                'テレビ ディレクタ',
+                                '大阪 エンジニア',
+                                'フットサル',
+                                '子育て',
+                            ] as $word)
+                            <a class="btn btn-light btn-sm mr-1 mb-2" href="/search?keyword={{urlencode($word)}}">{{$word}}</a>
+                            @endforeach
+                        </div>
+
                         <button type="submit" class="btn-block btn btn-primary">検索</button>
                     </form>
                 </div>
