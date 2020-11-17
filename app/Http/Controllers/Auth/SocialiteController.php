@@ -38,7 +38,8 @@ class SocialiteController extends BaseController
      *
      * @var string
      */
-    protected $redirectToAfterRegist = '/configuration';
+    protected $redirectToAfterRegist = '/dashboard';
+    // protected $redirectToAfterRegist = '/configuration'; 
 
     /**
      * @param Request $request
