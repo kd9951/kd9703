@@ -47,11 +47,11 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
                     <div>
-                        <h4 class="card-title mb-0">人気のアカウント</h4>
-                        <div class="small text-muted">Popular Accounts</div>
+                        <h4 class="card-title mb-0">{{$title}}</h4>
+                        <div class="small text-muted">{{$title_en}}</div>
                     </div>
                 </div>
-                    @foreach($popular_accounts as $idx => $account)
+                    @foreach($accounts as $idx => $account)
                         <a class="account-link d-flex" href="http://twitter.com/{{$account->username}}">
                             @if($account->img_thumnail_url)
                                 <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
@@ -82,7 +82,7 @@
     </div>
 </div>
 
-@component('components.paginator', ['paginate' => $popular_accounts->getPaginate()])
+@component('components.paginator', ['paginate' => $accounts->getPaginate()])
 @endcomponent
 
 </div>

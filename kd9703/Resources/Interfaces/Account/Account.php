@@ -27,6 +27,11 @@ interface Account
     public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts;
 
     /**
+     * 検索
+     */
+    public function search(Media $media, ?string $keyword, ?PaginateInput $paginateInput = null): Accounts;
+
+    /**
      * ownerの自分のアカウントとしてを登録する
      * 事前に自身のアカウントであることを認証済であり
      * ログイン情報が含まれている必要がある

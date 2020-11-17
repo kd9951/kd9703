@@ -9,6 +9,7 @@ use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Entities\Paginate\Output as PaginateOutput;
 use Kd9703\Resources\Interfaces\Account\Account as AccountInterface;
 use Kd9703\Resources\Kd9703\Tools\EloquentAdapter;
+use Kd9703\Resources\Kd9703\Tools\SearchKeyword;
 
 /**
  * アカウント
@@ -16,6 +17,7 @@ use Kd9703\Resources\Kd9703\Tools\EloquentAdapter;
 class Account implements AccountInterface
 {
     use EloquentAdapter;
+    use SearchKeyword;
 
     const COLS_REQUIRED = [
         'account_id',
@@ -91,11 +93,26 @@ class Account implements AccountInterface
      */
     public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts
     {
+        return $this->search($media, '', $paginateInput);
+    }
+
+    /**
+     * 検索
+     */
+    public function search(Media $media, ?string $keyword, ?PaginateInput $paginateInput = null): Accounts
+    {
         $eloquent = $this->getEloquent($media, 'Account');
         $eloquent = $eloquent
             ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
             ->where('is_salon_account', true)
             ->orderBy('score', 'desc');
+
+        // キーワード検索
+        $eloquent = $this->searchKeyword($eloquent, $keyword ?? '', [
+            'username',
+            'fullname',
+            'description',
+        ]);
 
         if ($paginateInput && $paginateInput->per_page) {
             $collection     = $eloquent->paginate($paginateInput->per_page, ['*'], 'page', $paginateInput->page);

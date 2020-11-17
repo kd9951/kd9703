@@ -33,8 +33,10 @@ class PopularController extends BaseController
             'page'     => $request->page,
         ]));
 
-        return view('populars', [
-            'popular_accounts' => $popular_accounts,
+        return view('accounts', [
+            'title' => '人気のアカウント',
+            'title_en' => 'Popular Accounts',
+            'accounts' => $popular_accounts,
         ]);
     }
 }

@@ -35,6 +35,28 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
                     <div>
+                        <h4 class="card-title mb-0">検索</h4>
+                        <div class="small text-muted">Account Search</div>
+                    </div>
+                </div>
+                <div>
+                    <form action="search" method="GET">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1">キーワード</label>
+                            <input type="keyword" class="form-control" id="keyword" name="keyword">
+                        </div>
+                        <button type="submit" class="btn-block btn btn-primary">検索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
                         <h4 class="card-title mb-0">人気のアカウント</h4>
                         <div class="small text-muted">Popular Accounts</div>
                     </div>
