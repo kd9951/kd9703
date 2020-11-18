@@ -5,6 +5,13 @@
 
     RewriteEngine On
 
+    RewriteCond %{HTTP_HOST} ^salon-twitter\.jp [NC]
+    RewriteCond %{SERVER_PORT} 80
+    RewriteRule ^(.*)$ https://salon-twitter.jp/$1 [R,L]
+
+    RewriteCond %{HTTP_HOST} ^18\.178\.81\.180 [NC]
+    RewriteRule ^(.*)$ https://salon-twitter.jp/$1 [R,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
