@@ -22,7 +22,7 @@ interface Account
     public function getOlds(Media $media, int $limit): Accounts;
 
     /**
-     * 人気のアカウント
+     * 注目のアカウント
      */
     public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts;
 

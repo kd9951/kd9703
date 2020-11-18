@@ -25,16 +25,18 @@ class DashboardController extends BaseController
 
         // トップ５
         $popular_accounts = $AccountResource->getPops($account->media, new PaginateInput([
-            'per_page' => 5,
+            'per_page' => 50,
             'page'     => 1,
         ]));
+        $popular_accounts->suffle();
+        $popular_accounts = $popular_accounts->slice(0, 5);
 
         $total_salon_accounts = $AccountResource->search($account->media)->count();
 
         return view('dashboard', [
             'total_salon_accounts' => $total_salon_accounts,
             // 'total_active_accounts' => $total_active_accounts,
-            'popular_accounts' => $popular_accounts,
+            'popular_accounts'     => $popular_accounts,
         ]);
     }
 }

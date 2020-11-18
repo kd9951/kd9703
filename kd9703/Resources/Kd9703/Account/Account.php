@@ -89,7 +89,7 @@ class Account implements AccountInterface
     }
 
     /**
-     * 人気のアカウント
+     * 注目のアカウント
      */
     public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts
     {

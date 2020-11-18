@@ -162,8 +162,8 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
                     <div>
-                        <h4 class="card-title mb-0">人気のアカウント</h4>
-                        <div class="small text-muted">Popular Accounts</div>
+                        <h4 class="card-title mb-0">注目のアカウント</h4>
+                        <div class="small text-muted">Featured Accounts</div>
                     </div>
                     <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
                         <a  href="{{route('populars.index')}}" class="btn btn-default" type="button"> すべて見る </a>

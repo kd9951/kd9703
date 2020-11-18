@@ -12,7 +12,7 @@ use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Resources\Interfaces\Account\Account;
 
 /**
- * 人気のアカウント
+ * 注目のアカウント
  */
 class PopularController extends BaseController
 {
@@ -34,8 +34,8 @@ class PopularController extends BaseController
         ]));
 
         return view('accounts', [
-            'title' => '人気のアカウント',
-            'title_en' => 'Popular Accounts',
+            'title'    => '注目のアカウント',
+            'title_en' => 'Featured Accounts',
             'accounts' => $popular_accounts,
         ]);
     }

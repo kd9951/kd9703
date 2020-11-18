@@ -62,6 +62,7 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
     }
 
     /**
+     *
      */
     public function getPaginate(): PaginateOutput
     {
@@ -137,6 +138,7 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
      */
     public function slice(int $start, ?int $count = null): self
     {
+        return new static(array_slice($this->_array, $start, $count));
     }
 
     /**
@@ -145,6 +147,9 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
      */
     public function splice(int $start, ?int $count = null): self
     {
+        $result       = array_splice($this->_array, $start, $count);
+        $this->_array = array_values($this->_array);
+        return new static($result);
     }
 
     /**
@@ -188,8 +193,7 @@ abstract class EntityList extends Entity implements Iterator, ArrayAccess, Count
      */
     public function suffle()
     {
-        // 便利だけど、乱数生成がインフラに依存する
-        throw new \LogicException();
+        shuffle($this->_array);
     }
 
     // Iterator

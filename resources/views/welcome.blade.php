@@ -56,7 +56,7 @@ body {
                         <div class="card-body">
                                 <div>
                                     <h4 class="card-title mb-0">使い方とポイント</h4>
-                                    <div class="small text-muted">Popular Accounts</div>
+                                    <div class="small text-muted">Featured Accounts</div>
                                 </div>
 
                                 <ul class="list-unstyled mt-3">
