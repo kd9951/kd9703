@@ -9,7 +9,6 @@ use Kd9703\Entities\Media\Account as AccountEntity;
 use Kd9703\Logger\Interfaces\OwnerLogger;
 use Kd9703\Logger\Interfaces\SystemLogger;
 use Kd9703\MediaAccess\Interfaces\GetUsers;
-use Kd9703\MediaBinder;
 use Kd9703\Resources\Interfaces\Account\Account;
 use Kd9703\Usecases\Usecase;
 
@@ -28,7 +27,6 @@ final class UpdateUsers extends Usecase
         SetGlobalAccountRegulation $SetGlobalAccountRegulation,
         GetUsers $GetUsers,
         Account $Account,
-        MediaBinder $MediaBinder,
         Random $random,
         Timer $timer,
         SystemLogger $systemLogger,
@@ -37,7 +35,6 @@ final class UpdateUsers extends Usecase
         $this->usecases['SetGlobalAccountRegulation'] = $SetGlobalAccountRegulation;
         $this->mediaAccesses['GetUsers']              = $GetUsers;
         $this->resources['Account']                   = $Account;
-        $this->MediaBinder                            = $MediaBinder;
 
         parent::__construct($random, $timer, $systemLogger, $ownerLogger);
     }
