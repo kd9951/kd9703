@@ -3,6 +3,7 @@
 namespace Kd9703\MediaAccess\Twitter\Tools;
 
 use Carbon\Carbon;
+use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account;
 
 /**
@@ -13,6 +14,7 @@ trait FormatUserObjectForAccount
     public function formatUserObjectForAccount(array $user): array
     {
         $account = [
+            'media'            => Media::TWITTER(),
             'account_id'       => $user['id'] ?? null,
             'username'         => $user['screen_name'] ?? null,
             'fullname'         => $user['name'] ?? null,
