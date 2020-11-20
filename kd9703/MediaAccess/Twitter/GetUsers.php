@@ -28,7 +28,7 @@ class GetUsers extends MediaAccess implements GetUsersInterface
 
         $this->wait->waitNormal('twitter.GetUsers', 500, 1500);
 
-        $url = self::ENDPOINT_USER;
+        $url   = self::ENDPOINT_USER;
         $param = ['user_id' => implode(',', $target_accounts->pluck('account_id'))];
         $this->system_logger->mediaCall('GET', $url, $param, [], $account);
         $this->client->get($url, $param);
@@ -36,7 +36,7 @@ class GetUsers extends MediaAccess implements GetUsersInterface
 
         $response_json_array = $this->client->getContentAs('json.array');
 
-        if(! is_array($response_json_array)) {
+        if (!is_array($response_json_array)) {
             $this->system_logger->error('/users/lookup returns invalid json.', compact('url', 'param', 'response_json_array'));
             $formatted = [];
         } else {
@@ -74,6 +74,7 @@ class GetUsers extends MediaAccess implements GetUsersInterface
             $account = [
                 'username'         => $user['screen_name'] ?? null,
                 'fullname'         => $user['name'] ?? null,
+                'location'         => $user['location'] ?? null,
                 'description'      => $user['description'] ?? null,
                 'web_url1'         => $user['url'] ?? null,
                 'img_thumnail_url' => $user['profile_image_url_https'] ?? null,
@@ -82,9 +83,8 @@ class GetUsers extends MediaAccess implements GetUsersInterface
                 'total_follow'     => $user['friends_count'] ?? null,
                 'total_follower'   => $user['followers_count'] ?? null,
                 'total_likes'      => $user['favourites_count'] ?? null,
-                'last_posted_at'   => $user['last_posted_at'] ?? null,
+                'total_listed'     => $user['listed_count'] ?? null,
                 'is_private'       => $user['protected'] ?? null,
-                'last_posted_at'   => $user['status']['created_at'] ?? null,
             ];
 
             // 都道府県（推定）
@@ -98,9 +98,12 @@ class GetUsers extends MediaAccess implements GetUsersInterface
             if (isset($user['status']['created_at'])) {
                 $account['last_posted_at'] = Carbon::parse($user['status']['created_at'])->format('Y-m-d H:i:s');
             }
+            if (isset($user['created_at'])) {
+                $account['started_at'] = Carbon::parse($user['created_at'])->format('Y-m-d H:i:s');
+            }
 
             // スコア計算 ロジックは(他でも使うなら)切り離したほうが良い
-            $account['score'] = 0 + $account['total_follower'] - $account['total_follow'] / 2;// + $account['total_likes'];
+            $account['score'] = 0 + $account['total_follower'] - $account['total_follow'] / 2; // + $account['total_likes'];
 
             $formatted[$account_id] = $account;
         }
@@ -115,8 +118,8 @@ class GetUsers extends MediaAccess implements GetUsersInterface
     {
         // 推定の優先度 場所→名前(人名っぽいものは省いて)→紹介文
         return $this->seekPrefecture($location) ?:
-            // 自己紹介文には「サッカーの香川選手が好きです」と書くかもしれないので
-            ($this->seekPrefectureStrict($name) ?: $this->seekPrefectureStrict($description));
+        // 自己紹介文には「サッカーの香川選手が好きです」と書くかもしれないので
+        ($this->seekPrefectureStrict($name) ?: $this->seekPrefectureStrict($description));
     }
 
     /**

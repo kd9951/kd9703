@@ -68,6 +68,7 @@ final class RegistAccount extends Usecase
         // その他付帯情報（情報があるときだけセット）
         foreach ([
             // 'prefecture'          => $user[''],
+            'location'         => $user['location'] ?? null,
             'web_url1'         => $user['entities']['url']['urls'][0]['expanded_url'] ?? null,
             'web_url2'         => $user['entities']['url']['urls'][1]['expanded_url'] ?? null,
             'web_url3'         => $user['entities']['url']['urls'][2]['expanded_url'] ?? null,
@@ -77,7 +78,9 @@ final class RegistAccount extends Usecase
             'total_follow'     => $user['friends_count'] ?? null,
             'total_follower'   => $user['followers_count'] ?? null,
             'total_likes'      => $user['favourites_count'] ?? null,
+            'total_listed'     => $user['listed_count'] ?? null,
             'last_posted_at'   => ($user['status']['created_at'] ?? null) ? date('Y-m-d H:i:s', strtotime($user['status']['created_at'])) : null,
+            'started_at'       => ($user['created_at'] ?? null) ? date('Y-m-d H:i:s', strtotime($user['created_at'])) : null,
             'is_private'       => $user['protected'] ?? null,
         ] as $key => $value) {
             if (!is_null($value)) {

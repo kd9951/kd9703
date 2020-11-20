@@ -32,6 +32,7 @@ class Account implements AccountInterface
         'oauth_access_token',
         'oauth_access_secret',
         'last_logged_in_at',
+        'location',
         'prefecture',
         'description',
         'web_url1',
@@ -43,7 +44,9 @@ class Account implements AccountInterface
         'total_post',
         'total_follow',
         'total_follower',
+        'total_listed',
         'last_posted_at',
+        'started_at',
         'total_likes',
         'reviewed_at',
         'is_private',
@@ -104,7 +107,7 @@ class Account implements AccountInterface
         $eloquent = $this->getEloquent($media, 'Account');
         $eloquent = $eloquent
             ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
-            ->where(function($q) {
+            ->where(function ($q) {
                 $q->whereNull('hidden_from_search');
                 $q->orWhere('hidden_from_search', false);
             })
