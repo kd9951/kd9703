@@ -6,12 +6,15 @@ use Kd9703\Constants\Prefecture;
 use Kd9703\Entities\Media\Account;
 use Kd9703\Entities\Media\Accounts;
 use Kd9703\MediaAccess\Interfaces\GetUsers as GetUsersInterface;
+use Kd9703\MediaAccess\Twitter\Tools\FormatUserObjectForAccount;
 
 /**
  * 通知を取得
  */
 class GetUsers extends MediaAccess implements GetUsersInterface
 {
+    use FormatUserObjectForAccount;
+
     const ENDPOINT_USER = '/users/lookup'; // :account_id
 
     /**
@@ -69,41 +72,10 @@ class GetUsers extends MediaAccess implements GetUsersInterface
 
         foreach ($response_json_array as $user) {
 
-            $account_id = $user['id'];
+            $account    = $this->FormatUserObjectForAccount($user);
 
-            $account = [
-                'username'         => $user['screen_name'] ?? null,
-                'fullname'         => $user['name'] ?? null,
-                'location'         => $user['location'] ?? null,
-                'description'      => $user['description'] ?? null,
-                'web_url1'         => $user['url'] ?? null,
-                'img_thumnail_url' => $user['profile_image_url_https'] ?? null,
-                'img_cover_url'    => $user['profile_banner_url'] ?? null,
-                'total_post'       => $user['statuses_count'] ?? null,
-                'total_follow'     => $user['friends_count'] ?? null,
-                'total_follower'   => $user['followers_count'] ?? null,
-                'total_likes'      => $user['favourites_count'] ?? null,
-                'total_listed'     => $user['listed_count'] ?? null,
-                'is_private'       => $user['protected'] ?? null,
-            ];
-
-            // 都道府県（推定）
-            $account['prefecture'] = $this->guessPrefecture(
-                $user['name'] ?? '',
-                $user['description'] ?? '',
-                $user['location'] ?? ''
-            );
-
-            // 最後の投稿日時
-            if (isset($user['status']['created_at'])) {
-                $account['last_posted_at'] = Carbon::parse($user['status']['created_at'])->format('Y-m-d H:i:s');
-            }
-            if (isset($user['created_at'])) {
-                $account['started_at'] = Carbon::parse($user['created_at'])->format('Y-m-d H:i:s');
-            }
-
-            // スコア計算 ロジックは(他でも使うなら)切り離したほうが良い
-            $account['score'] = 0 + $account['total_follower'] - $account['total_follow'] / 2; // + $account['total_likes'];
+            $account_id = $account['account_id'];
+            unset($account['account_id']);
 
             $formatted[$account_id] = $account;
         }
