@@ -28,7 +28,7 @@ class GetUsers extends MediaAccess implements GetUsersInterface
             return $target_accounts;
         }
 
-        $this->wait->waitNormal('twitter.GetUsers', 500, 1500);
+        $this->wait->waitNormal('twitter.GetUsers', 0, 0);
 
         $url   = self::ENDPOINT_USER;
         $param = ['user_id' => implode(',', $target_accounts->pluck('account_id'))];
