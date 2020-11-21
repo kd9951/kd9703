@@ -9,7 +9,7 @@ composer install --no-dev
 composer dump-autoload
 
 # 環境設定をコピー
-cp .env.production .env
+# cp .env.production .env
 
 # /configの設定情報を1ファイルにまとめておく
 php artisan config:cache
