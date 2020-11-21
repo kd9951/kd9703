@@ -53,12 +53,15 @@ trait FormatUserObjectForAccount
              - $account['total_follow'] / 2
              + $account['total_listed'] * 100
         ;
+        // 開始からの日数で割る
+        $started_at_nishino = '2020-05-10 20:23:07';
+        $diff               = time() - max(strtotime($account['started_at'] ?? 'now'), strtotime($started_at_nishino));
+        $account['score']   = floor($account['score'] / max(1, $diff / 60 / 60 / 24 / 10));
 
         $account = array_filter($account, function ($v) {return !is_null($v);});
 
         return $account;
     }
-
 
     /**
      * @param string $str
