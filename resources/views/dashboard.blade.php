@@ -13,8 +13,14 @@
     overflow: hidden;
 }
 .account-link .username{
+    display: inline-block;
     font-weight: bold;
     font-size: 80%;
+}
+.location {
+    display: inline-block;
+    font-size: 80%;
+    margin-left: 0.5em;
 }
 .account-link .fullname{
     font-weight: bold;
@@ -27,6 +33,11 @@
 }
 .account-link .c-avatar {
     min-width: 48px;
+}
+
+.account-link .description {
+    font-size: 0.9em;
+    color: var(--dark);
 }
 
 .specs > div {
@@ -176,14 +187,15 @@
                                 <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
                             @endif
                             <div style="width: 100%">
-                                <div class="">
+                                <div class="justify-content-between align-items-center">
                                     <div class="names">
-                                            <div class="username">{{ $account->username }}</div>
                                             <div class="fullname">{{ $account->fullname }}</div>
+                                            <div class="username">{{ $account->username }}</div>
+                                            <div class="location">{{ $account->location }}</div>
                                     </div>
-                                    <div class="specs mt-1 d-flex justify-content-end hide-md-down">
-                                        @if($account->prefecture)<div class="ml-2"><b>{{ Kd9703\Constants\Prefecture::TEXT_JPN[$account->prefecture->toValue()] }}</b></div>@endif
-                                        <div class="ml-2"><b>{{ number_format($account->total_follow) }}</b> フォロー中</div>
+
+                                    <div class="specs mt-1 d-flex justify-content-end">
+                                        <div class=""><b>{{ number_format($account->total_follow) }}</b> フォロー中</div>
                                         <div class="ml-2"><b>{{ number_format($account->total_follower) }}</b> フォロワー</div>
                                     </div>
                                 </div>
