@@ -72,6 +72,7 @@ final class UpdateUsers extends Usecase
         }
 
         $this->systemLogger->info("$count 人のプロフィールを最新化");
+        $this->systemLogger->kpi('account-reviewed', "$count");
 
         return true;
     }

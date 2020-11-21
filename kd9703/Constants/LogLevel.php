@@ -4,6 +4,7 @@ namespace Kd9703\Constants;
 class LogLevel extends Enum
 {
     const DEBUG        = 'debug';
+    const KPI          = 'kpi';
     const INFO         = 'info';
     const NOTICE       = 'notice';
     const MEDIA_ACCESS = 'media_access';
@@ -16,6 +17,7 @@ class LogLevel extends Enum
 
     const LIST = [
         self::DEBUG,
+        self::KPI,
         self::INFO,
         self::NOTICE,
         self::MEDIA_ACCESS,

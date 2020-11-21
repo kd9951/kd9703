@@ -92,6 +92,20 @@ class SystemLogger implements SystemLoggerInterface
      * @param $url
      * @param $param
      */
+    public function kpi(string $name, string $value, $context = [])
+    {
+        $this->log(LogLevel::KPI . "-$name", $value, $context);
+    }
+
+    /**
+     * MediaAccessが外部アクセスした際のレスポンス
+     * 主にデバッグ用
+     * $method, $url, $getparam の組み合わせで mediaCall とペアにする
+     *
+     * @param $method
+     * @param $url
+     * @param $param
+     */
     public function mediaResponse($method, $url, $getparam, $postapram, HttpClientInterface $client)
     {
         $query_string  = http_build_query($getparam);
@@ -137,6 +151,10 @@ class SystemLogger implements SystemLoggerInterface
         if (rand(0, $ratio - 1) == 0) {
             $this->deleteOld();
         }
+
+        $date    = date('Y-m-d H:i:s');
+        $message = preg_replace('/\s+/', ' ', $message);
+        echo "$date [$level] $message\n";
     }
 
     protected function deleteOld()

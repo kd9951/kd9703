@@ -40,4 +40,14 @@ interface SystemLogger extends LoggerInterface
      * @param $param
      */
     public function mediaResponse($method, $url, $getparam, $postapram, HttpClientInterface $client);
+
+    /**
+     * 指標を記録
+     *
+     * @param $method
+     * @param $url
+     * @param $param
+     */
+    public function kpi(string $name, string $value, $context = []);
+
 }
