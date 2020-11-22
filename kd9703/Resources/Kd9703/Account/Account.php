@@ -73,6 +73,17 @@ class Account implements AccountInterface
     }
 
     /**
+     * @param int $account_id
+     */
+    public function getAllIds(?Media $media): array
+    {
+        $eloquent = $this->getEloquent($media, 'Account');
+        $accounts = $eloquent->pluck('account_id')->toArray();
+
+        return $accounts;
+    }
+
+    /**
      * 最近更新されていないアカウント
      */
     public function getOlds(Media $media, int $limit): Accounts

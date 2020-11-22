@@ -17,6 +17,11 @@ interface Account
     public function getOne(?Media $media, string $account_id): ?AccountEntity;
 
     /**
+     * @param int $account_id
+     */
+    public function getAllIds(?Media $media): array;
+
+    /**
      * 最近更新されていないアカウント
      */
     public function getOlds(Media $media, int $limit): Accounts;

@@ -47,8 +47,9 @@ class MediaFactory
             \Crawler\HttpClientInterface::class => \Crawler\HttpClients\TwitterApi::class,
             \Crawler\ParserInterface::class     => \Crawler\Parsers\Json::class,
 
-            \Kd9703\MediaAccess\Interfaces\GetUsers::class => \Kd9703\MediaAccess\Twitter\GetUsers::class,
-            \Kd9703\MediaAccess\Interfaces\GetProfile::class => \Kd9703\MediaAccess\Twitter\GetProfile::class,
+            \Kd9703\MediaAccess\Interfaces\GetUsers::class     => \Kd9703\MediaAccess\Twitter\GetUsers::class,
+            \Kd9703\MediaAccess\Interfaces\GetProfile::class   => \Kd9703\MediaAccess\Twitter\GetProfile::class,
+            \Kd9703\MediaAccess\Interfaces\GetFollowers::class => \Kd9703\MediaAccess\Twitter\GetFollowers::class,
         ],
     ];
 
