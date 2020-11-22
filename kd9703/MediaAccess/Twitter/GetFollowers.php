@@ -195,7 +195,7 @@ class GetFollowers extends MediaAccess implements GetFollowersContract, Suspenda
 
             $json = $this->client->getContentAs('json.array');
 
-            if (!is_array($json['ids'])) {
+            if (!isset($json['ids']) || !is_array($json['ids'])) {
                 $this->system_logger->warning('getCandidates failed. could not get enough data.');
                 break;
             }
