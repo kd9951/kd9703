@@ -206,6 +206,46 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h4 class="card-title mb-0">最近始めたアカウント</h4>
+                        <div class="small text-muted">Recentry Joined Accounts</div>
+                    </div>
+                    <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                        <a  href="{{route('recents.index')}}" class="btn btn-default" type="button"> すべて見る </a>
+                    </div>
+                </div>
+                <div>
+                    @foreach($recent_accounts as $account)
+                        <a class="account-link d-flex" href="http://twitter.com/{{$account->username}}">
+                            @if($account->img_thumnail_url)
+                                <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
+                            @endif
+                            <div style="width: 100%">
+                                <div class="justify-content-between align-items-center">
+                                    <div class="names">
+                                            <div class="fullname">{{ $account->fullname }}</div>
+                                            <div class="username">{{ $account->username }}</div>
+                                            <div class="location">{{ $account->location }}</div>
+                                    </div>
+
+                                    <div class="specs mt-1 d-flex justify-content-end">
+                                        <div class=""><b>{{ number_format($account->total_follow) }}</b> フォロー中</div>
+                                        <div class="ml-2"><b>{{ number_format($account->total_follower) }}</b> フォロワー</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

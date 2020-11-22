@@ -5,6 +5,7 @@ use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account as AccountEntity;
 use Kd9703\Entities\Media\Accounts;
 use Kd9703\Entities\Paginate\Input as PaginateInput;
+use Kd9703\Entities\Sort\Inputs as SortInputs;
 
 /**
  * アカウント
@@ -34,7 +35,7 @@ interface Account
     /**
      * 検索
      */
-    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null): Accounts;
+    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null, ?SortInputs $sortInput = null): Accounts;
 
     /**
      * ownerの自分のアカウントとしてを登録する

@@ -7,6 +7,7 @@ use Kd9703\Entities\Media\Accounts;
 use Kd9703\Entities\Owner\Owner;
 use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Entities\Paginate\Output as PaginateOutput;
+use Kd9703\Entities\Sort\Inputs as SortInputs;
 use Kd9703\Resources\Interfaces\Account\Account as AccountInterface;
 use Kd9703\Resources\Kd9703\Tools\EloquentAdapter;
 use Kd9703\Resources\Kd9703\Tools\SearchKeyword;
@@ -113,7 +114,7 @@ class Account implements AccountInterface
     /**
      * 検索
      */
-    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null): Accounts
+    public function search(Media $media, ?string $keyword = null, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Accounts
     {
         $eloquent = $this->getEloquent($media, 'Account');
         $eloquent = $eloquent
@@ -122,8 +123,23 @@ class Account implements AccountInterface
                 $q->whereNull('hidden_from_search');
                 $q->orWhere('hidden_from_search', false);
             })
-            ->where('is_salon_account', true)
-            ->orderBy('score', 'desc');
+            ->where('is_salon_account', true);
+
+        // ソート
+        if($sortInputs && $sortInputs->count()) {
+            $applied = [];
+            foreach($sortInputs as $sortInput) {
+                $key = strtolower($sortInput->key);
+                if (!isset($applied[$key])) {
+                    $eloquent->orderBy($key, $sortInput->order);
+                    $applied[$key] = true;
+                }
+            }
+            unset($applied);
+        } else {
+            // デフォルトソート
+            $eloquent->orderBy('score', 'desc');
+        }
 
         // キーワード検索
         $eloquent = $this->searchKeyword($eloquent, $keyword ?? '', [
