@@ -172,7 +172,20 @@ class GetFollowers extends MediaAccess implements GetFollowersContract, Suspenda
      * @param  int     $page
      * @return array
      */
-    public function getCandidates(Account $account, array $exclude_account_ids): array
+    private function getCandidates(Account $account, array $exclude_account_ids): array
+    {
+        $account_ids = $this->getFollowerIds($account);
+        
+        return array_values(array_diff($account_ids, $exclude_account_ids));
+    }
+
+    /**
+     * 全フォロワーのIDを取得する
+     *
+     * @param  int     $page
+     * @return array
+     */
+    public function getFollowerIds(Account $account): array
     {
         $account_ids = [];
         $next_cursor = null;
@@ -209,8 +222,9 @@ class GetFollowers extends MediaAccess implements GetFollowersContract, Suspenda
             }
         }
 
-        return array_values(array_diff($account_ids, $exclude_account_ids));
+        return $account_ids;
     }
+
 
     /**
      * @param array $candidates

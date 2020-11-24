@@ -48,32 +48,37 @@ final class GetNewUsers extends Usecase
 
         $this->timer->start('GetNewUsers', $limit_sec * 1000);
 
-        // 既存のフォロワ数の多いアカウント
-        $master_ids = [
-            [1264452794758467584, 'salon_ukai2',     '鵜飼勇至',           ], // 14046
-            [1259696867677368320, 'salon_esashika',  '江刺家',             ], // 10480
-            [1259678482503614464, 'salon_matsuoka',  'まつろー',           ], // 14034
-            [1261228709580693505, 'salon_meiro',     'おざわゆうしん',     ], // 14003
-            [1259850565183516673, 'salon__yoshi',    'YOSHI',              ], // 13995
-            [1260191427008446469, 'salonyahagi',     '矢萩',               ], // 13690
-            [1307260129222389761, 'salon_1noue21',   'RYO_INOUE',          ], // 7569
-            [1269253262038843392, 'salonsarubutsu',  '川村伸寛（猫和尚）', ], // 3444
-            [1259673030441095171, 'salon_poupelle',  'べぇくん',           ], // 4823
-            [1259669887514931200, 'salonyan1',       '柳澤ヤン',           ], // 6946
-            [1259671491689369600, 'salonsetochan',   'セトちゃん',         ], // 4244
-        ];
+        // // 既存のフォロワ数の多いアカウント
+        // $master_ids = [
+        //     [1264452794758467584, 'salon_ukai2',     '鵜飼勇至',           ], // 14046
+        //     [1259696867677368320, 'salon_esashika',  '江刺家',             ], // 10480
+        //     [1259678482503614464, 'salon_matsuoka',  'まつろー',           ], // 14034
+        //     [1261228709580693505, 'salon_meiro',     'おざわゆうしん',     ], // 14003
+        //     [1259850565183516673, 'salon__yoshi',    'YOSHI',              ], // 13995
+        //     [1260191427008446469, 'salonyahagi',     '矢萩',               ], // 13690
+        //     [1307260129222389761, 'salon_1noue21',   'RYO_INOUE',          ], // 7569
+        //     [1269253262038843392, 'salonsarubutsu',  '川村伸寛（猫和尚）', ], // 3444
+        //     [1259673030441095171, 'salon_poupelle',  'べぇくん',           ], // 4823
+        //     [1259669887514931200, 'salonyan1',       '柳澤ヤン',           ], // 6946
+        //     [1259671491689369600, 'salonsetochan',   'セトちゃん',         ], // 4244
+        // ];
+
+        $master_ids = $this->mediaAccesses['GetFollowers']->getFollowerIds($account);
 
         shuffle($master_ids);
         reset($master_ids);
 
         while ($this->timer->remains('GetNewUsers')) {
             $count = 0;
-            $target_account = next($master_ids);
-            if (!$target_account) {
-                break;
-            }
-            [$target_account_id, $target_account_username, $target_account_fullname] = $target_account; 
-            $this->systemLogger->debug("Select $target_account_id ($target_account_username : $target_account_fullname) as a target.");
+            // $target_account = next($master_ids);
+            // if (!$target_account) {
+            //     break;
+            // }
+            // [$target_account_id, $target_account_username, $target_account_fullname] = $target_account;
+            // $this->systemLogger->debug("Select $target_account_id ($target_account_username : $target_account_fullname) as a target.");
+
+            $target_account_id = next($master_ids);
+            $this->systemLogger->debug("Select $target_account_id as a target.");
 
             $target_account = new AccountEntity(['account_id' => $target_account_id]);
 
