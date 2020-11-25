@@ -66,3 +66,24 @@ Artisan::command('app:get-new-users {limit_sec=15}', function (
         echo (string) $e;
     }
 });
+
+Artisan::command('app:update-kpi', function (
+    \Kd9703\Logger\Interfaces\SystemLogger $systemLogger
+) {
+    try {
+        $UpdateKpi = app(\Kd9703\Usecases\UpdateKpi::class);
+
+        ($UpdateKpi)([]);
+
+    } catch (\Throwable $e) {
+
+        $systemLogger->error($e->getMessage(), [
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+            'code' => $e->getCode(),
+            'body' => (string) $e,
+        ]);
+
+        echo (string) $e;
+    }
+});

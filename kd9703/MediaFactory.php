@@ -22,6 +22,7 @@ class MediaFactory
             \Kd9703\Resources\Interfaces\Account\FollowingAccount::class         => \Kd9703\Resources\Kd9703\Account\FollowingAccount::class,
             \Kd9703\Resources\Interfaces\Account\FollowingProposedAccount::class => \Kd9703\Resources\Kd9703\Account\FollowingProposedAccount::class,
             \Kd9703\Resources\Interfaces\Analyze\DailyTotal::class               => \Kd9703\Resources\Kd9703\Analyze\DailyTotal::class,
+            \Kd9703\Resources\Interfaces\Analyze\Kpi::class                      => \Kd9703\Resources\Kd9703\Analyze\Kpi::class,
 
             \Kd9703\Resources\Interfaces\Tag\Tag::class         => \Kd9703\Resources\Kd9703\Tag\Tag::class,
             \Kd9703\Resources\Interfaces\Tag\WatchingTag::class => \Kd9703\Resources\Kd9703\Tag\WatchingTag::class,
