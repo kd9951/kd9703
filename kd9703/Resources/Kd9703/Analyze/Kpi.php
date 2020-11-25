@@ -57,7 +57,7 @@ class Kpi implements KpiInterface
         $kpi->rejected_accounts_total    = $account->where('hidden_from_auto_follow', 1)->orWhere('hidden_from_search', 1)->count();
         $kpi->started_accounts_2w        = $account->whereBetween('started_at', [$start_2w, $end_2w])->count();
         $kpi->reviewed_accounts          = $system_log->whereBetween('created_at', [$start_1d, $end_1d])->where('level', 'kpi-account-reviewed')->sum('message');
-        $kpi->created_accounts           = $system_log->whereBetween('created_at', [$start_1d, $end_1d])->where('level', 'kpi-account-created')->sum('message');
+        $kpi->created_accounts           = $account->whereBetween('created_at', [$start_1d, $end_1d])->where('is_salon_account', 1)->count();
         $kpi->api_called_total           = $system_log->whereBetween('created_at', [$start_1d, $end_1d])->where('level', 'media_access')->where('message', 'like', '%CALL%')->count();
 
         $reviewed_at                 = $account->orderBy('reviewed_at', 'asc')->first()->reviewed_at ?? null;
