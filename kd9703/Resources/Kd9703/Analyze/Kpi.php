@@ -61,7 +61,7 @@ class Kpi implements KpiInterface
         $kpi->api_called_total           = $system_log->whereBetween('created_at', [$start_1d, $end_1d])->where('level', 'media_access')->where('message', 'like', '%CALL%')->count();
 
         $reviewed_at                 = $account->orderBy('reviewed_at', 'asc')->first()->reviewed_at ?? null;
-        $reviewed_at                 = $reviewed_at ? $reviewed_at->format('Y-m-d H:i:s') : null;
+        $reviewed_at                 = $reviewed_at instanceof \DateTime ? $reviewed_at->format('Y-m-d H:i:s') : null;
         $kpi->oldest_review_datetime = $reviewed_at;
 
         return $kpi;
