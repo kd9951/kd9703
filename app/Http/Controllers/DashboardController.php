@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Entities\Sort\Inputs as SortInputs;
 use Kd9703\Resources\Interfaces\Account\Account;
+use Kd9703\Resources\Interfaces\Analyze\Kpi;
 
 class DashboardController extends BaseController
 {
@@ -20,7 +22,8 @@ class DashboardController extends BaseController
      */
     public function index(
         // TODO UseCaseであるべき]
-        Account $AccountResource
+        Account $AccountResource,
+        Kpi $KpiResource
     ) {
         $account = Auth::user()->getAccount();
 
@@ -48,11 +51,15 @@ class DashboardController extends BaseController
 
         $total_salon_accounts = 0; // $AccountResource->search($account->media)->count();
 
+        $kpis = $KpiResource->getList(
+            Carbon::parse('-14 days')->format('Y-m-d'),
+            Carbon::now()->format('Y-m-d')
+        );
+
         return view('dashboard', [
-            'total_salon_accounts' => $total_salon_accounts,
-            // 'total_active_accounts' => $total_active_accounts,
-            'popular_accounts'     => $popular_accounts,
-            'recent_accounts'      => $recent_accounts,
+            'popular_accounts' => $popular_accounts,
+            'recent_accounts'  => $recent_accounts,
+            'kpis'             => $kpis,
         ]);
     }
 }

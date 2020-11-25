@@ -18,6 +18,7 @@ class Kpi implements KpiInterface
     use EloquentAdapter;
 
     const KPI_COLUMNS = [
+        'date',
         'accounts_total',
         'salon_accounts_total',
         'salon_accounts_active',
@@ -74,7 +75,7 @@ class Kpi implements KpiInterface
      * @param  array  $daily_total_ids
      * @return Tags
      */
-    public function getList(string $start_date, string $end_date = ''): Kpis
+    public function getList(string $start_date, string $end_date = '', string $order = 'desc'): Kpis
     {
         $eloquent = $this->getEloquent(null, 'Kpi');
 
@@ -85,7 +86,7 @@ class Kpi implements KpiInterface
             $eloquent = $eloquent->where('date', '<=', date('Y-m-d', strtotime($end_date)));
         }
 
-        $kpis = $eloquent->select(self::KPI_COLUMNS)->orderBy('date', 'desc')->get()->toArray();
+        $kpis = $eloquent->select(self::KPI_COLUMNS)->orderBy('date', $order)->get()->toArray();
 
         return new Kpis($kpis);
     }

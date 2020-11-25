@@ -19,7 +19,7 @@ interface Kpi
      * @param  array  $tag_ids
      * @return Tags
      */
-    public function getList(string $start_date, string $end_date = ''): Kpis;
+    public function getList(string $start_date, string $end_date = '', string $order = 'desc'): Kpis;
 
     /**
      * シンプルに単一の日別統計情報を永続化する

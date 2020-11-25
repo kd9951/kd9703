@@ -45,6 +45,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return mixed
+     */
+    public function isAdmin(): bool
+    {
+        return $this->account->account_id == config('services.twitter.owner_twitter_id');
+    }
+
+    /**
      * @var string
      */
     protected $table = 'has no tables';
