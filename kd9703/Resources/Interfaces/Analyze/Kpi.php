@@ -10,7 +10,7 @@ use Kd9703\Entities\Media\Account;
  */
 interface Kpi
 {
-    public function generateNow(): KpiEntity;
+    public function generate(string $php_time_string): KpiEntity;
 
     /**
      * 日別統計を取得する
