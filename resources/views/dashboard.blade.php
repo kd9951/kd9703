@@ -205,7 +205,7 @@
                         <h4 class="card-title mb-0">注目のアカウント</h4>
                         <div class="small text-muted">Featured Accounts</div>
                     </div>
-                    <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with buttons">
                         <a  href="{{route('populars.index')}}" class="btn btn-default" type="button"> すべて見る </a>
                     </div>
                 </div>
@@ -244,7 +244,7 @@
                         <h4 class="card-title mb-0">最近始めたアカウント</h4>
                         <div class="small text-muted">Recentry Joined Accounts</div>
                     </div>
-                    <div class="btn-toolbar d-none d-md-block" role="toolbar" aria-label="Toolbar with buttons">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with buttons">
                         <a  href="{{route('recents.index')}}" class="btn btn-default" type="button"> すべて見る </a>
                     </div>
                 </div>
