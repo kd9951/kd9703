@@ -2,6 +2,7 @@
 
 namespace Kd9703\Entities\Owner;
 
+use Kd9703\Constants\ShowNew;
 use Kd9703\Entities\Entity;
 
 class Configration extends Entity
@@ -13,6 +14,10 @@ class Configration extends Entity
         // アプリからの利用を許可しない
         'hidden_from_auto_follow'              => ['bool', null], // 自動フォローする対象から除外する
         'hidden_from_search'                   => ['bool', null], // 検索対象から除外する（このアプリからはサロンアカウントとして存在しない扱い）
+
+        // 表示設定
+        'show_new_by'                          => ['integer', true], // 新着表示基準
+        'show_new_days'                        => ['integer', ShowNew::BY_CREATED_AT], // 新着表示の日数
 
         // フォローするか
         'auto_follow'                          => ['bool', false], // 条件に従い自動フォローする

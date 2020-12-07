@@ -54,6 +54,10 @@ class Account implements AccountInterface
         'is_salon_account',
     ];
 
+    const COLS_READONLY = [
+        'created_at',
+    ];
+
     /**
      * @param Owner $owner
      */
@@ -61,14 +65,15 @@ class Account implements AccountInterface
     {
         $eloquent = $this->getEloquent($media, 'Account');
         $account  = $eloquent
-            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION, self::COLS_READONLY))
             ->where('account_id', $account_id)->first();
 
         if (!$account) {
             return null;
         }
-        $account          = $account->toArray();
-        $account['media'] = $media;
+        $account               = $account->toArray();
+        $account['media']      = $media;
+        $account['created_at'] = date('Y-m-d H:i:s', strtotime($account['created_at']));
 
         return new AccountEntity($account);
     }
@@ -91,13 +96,14 @@ class Account implements AccountInterface
     {
         $eloquent = $this->getEloquent($media, 'Account');
         $accounts = $eloquent
-            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION, self::COLS_READONLY))
             ->orderBy('reviewed_at', 'asc')
             ->take($limit)
             ->get()->toArray();
 
         foreach ($accounts as $idx => $account) {
-            $accounts[$idx]['media'] = $media;
+            $accounts[$idx]['media']      = $media;
+            $accounts[$idx]['created_at'] = date('Y-m-d H:i:s', strtotime($accounts[$idx]['created_at']));
         }
 
         return new Accounts($accounts);
@@ -118,7 +124,7 @@ class Account implements AccountInterface
     {
         $eloquent = $this->getEloquent($media, 'Account');
         $eloquent = $eloquent
-            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION))
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION, self::COLS_READONLY))
             ->where(function ($q) {
                 $q->whereNull('hidden_from_search');
                 $q->orWhere('hidden_from_search', false);
@@ -126,9 +132,9 @@ class Account implements AccountInterface
             ->where('is_salon_account', true);
 
         // ソート
-        if($sortInputs && $sortInputs->count()) {
+        if ($sortInputs && $sortInputs->count()) {
             $applied = [];
-            foreach($sortInputs as $sortInput) {
+            foreach ($sortInputs as $sortInput) {
                 $key = strtolower($sortInput->key);
                 if (!isset($applied[$key])) {
                     $eloquent->orderBy($key, $sortInput->order);
@@ -160,7 +166,8 @@ class Account implements AccountInterface
         }
 
         foreach ($accounts as $idx => $account) {
-            $accounts[$idx]['media'] = $media;
+            $accounts[$idx]['media']      = $media;
+            $accounts[$idx]['created_at'] = date('Y-m-d H:i:s', strtotime($accounts[$idx]['created_at']));
         }
 
         return (new Accounts($accounts))->withPaginate($paginateOutput);

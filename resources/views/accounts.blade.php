@@ -47,6 +47,11 @@
 
 <div class="container">
 
+@php
+$show_new_by = Auth::user()->config('show_new_by');
+$show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days') . ' days')->format('Y-m-d H:i:s');
+@endphp
+
 <div class="row">
     <div class="col">
         <div class="card">
@@ -66,7 +71,18 @@
                                 {{-- 上段 --}}
                                 <div class="d-lg-flex justify-content-between align-items-center">
                                     <div class="names">
-                                            <div class="fullname">{{ $account->fullname }}</div>
+                                            <div class="fullname">
+                                                {{ $account->fullname }}
+                                                @if(
+                                                    $show_new_by == Kd9703\Constants\ShowNew::BY_CREATED_AT
+                                                    && $account->created_at >= $show_new_date
+                                                    || $show_new_by == Kd9703\Constants\ShowNew::BY_STARTED_AT
+                                                    && $account->started_at >= $show_new_date
+                                                )
+                                                <span class="badge bg-warning text-white">NEW</span>
+                                                @endif
+                                            </div>
+
                                             <div class="username">{{ $account->username }}</div>
                                             <div class="location">{{ $account->location }}</div>
                                     </div>

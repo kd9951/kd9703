@@ -16,6 +16,8 @@ class Configuration implements ConfigurationInterface
     use EloquentAdapter;
 
     const COLS = [
+        'show_new_by',
+        'show_new_days',
         'auto_follow',
         'target_follow_per_day',
         'sleep_hour_start',

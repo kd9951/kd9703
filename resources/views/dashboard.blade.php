@@ -47,6 +47,11 @@
 
 <div class="container">
 
+@php
+$show_new_by = Auth::user()->config('show_new_by');
+$show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days') . ' days')->format('Y-m-d H:i:s');
+@endphp
+
         {{-- アプリ利用者数
         アプリアクティブ利用者数
         アプリ利用拒否者数
@@ -218,7 +223,18 @@
                             <div style="width: 100%">
                                 <div class="justify-content-between align-items-center">
                                     <div class="names">
-                                            <div class="fullname">{{ $account->fullname }}</div>
+                                            <div class="fullname">
+                                                {{ $account->fullname }}
+                                                @if(
+                                                    $show_new_by == Kd9703\Constants\ShowNew::BY_CREATED_AT
+                                                    && $account->created_at >= $show_new_date
+                                                    || $show_new_by == Kd9703\Constants\ShowNew::BY_STARTED_AT
+                                                    && $account->started_at >= $show_new_date
+                                                )
+                                                <span class="badge bg-warning text-white">NEW</span>
+                                                @endif
+                                            </div>
+
                                             <div class="username">{{ $account->username }}</div>
                                             <div class="location">{{ $account->location }}</div>
                                     </div>
@@ -257,7 +273,18 @@
                             <div style="width: 100%">
                                 <div class="justify-content-between align-items-center">
                                     <div class="names">
-                                            <div class="fullname">{{ $account->fullname }}</div>
+                                            <div class="fullname">
+                                                {{ $account->fullname }}
+                                                @if(
+                                                    $show_new_by == Kd9703\Constants\ShowNew::BY_CREATED_AT
+                                                    && $account->created_at >= $show_new_date
+                                                    || $show_new_by == Kd9703\Constants\ShowNew::BY_STARTED_AT
+                                                    && $account->started_at >= $show_new_date
+                                                )
+                                                <span class="badge bg-warning text-white">NEW</span>
+                                                @endif
+                                            </div>
+
                                             <div class="username">{{ $account->username }}</div>
                                             <div class="location">{{ $account->location }}</div>
                                     </div>

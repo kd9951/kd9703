@@ -50,6 +50,8 @@ class Account extends Entity
         'tracked_follow'   => ['?int', 0], // アプリが保持しているフォロー数
         'tracked_follower' => ['?int', 0], // アプリが保持しているフォロワー数
         'tracked_post'     => ['?int', 0], // アプリが保持している投稿数
+
+        'created_at'       => ['?date:Y-m-d H:i:s', null],
     ];
 
     // セッタ（検証の実装）を書くならこのように
