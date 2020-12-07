@@ -23,6 +23,8 @@ class ConfigurationController extends BaseController
 
         $configuration = $ConfigurationResource->get($account);
 
+        session(['config_previous' => url()->previous()]);
+
         return view('configuration', [
             'account'       => $account,
             'configuration' => $configuration,
@@ -55,8 +57,8 @@ class ConfigurationController extends BaseController
 
         $configuration = $ConfigurationResource->store($account, $configuration);
 
-        return redirect()->route('configuration.show');
         Auth::user()->configRefresh();
 
+        return session()->has('links') ? redirect()->route('dashboard') : redirect()->to(session('config_previous'));
     }
 }
