@@ -46,8 +46,12 @@ class ConfigurationController extends BaseController
 
         $input = $request->all();
 
-        $input['follow_only_tweets_more_than']      = $input['follow_only_tweets_more_than'] == 'on' ? 1 : 0;
-        $input['follow_back_only_tweets_more_than'] = $input['follow_back_only_tweets_more_than'] == 'on' ? 1 : 0;
+        if (isset($input['follow_only_tweets_more_than'])) {
+            $input['follow_only_tweets_more_than'] = $input['follow_only_tweets_more_than'] == 'on' ? 1 : 0;
+        }
+        if (isset($input['follow_back_only_tweets_more_than'])) {
+            $input['follow_back_only_tweets_more_than'] = $input['follow_back_only_tweets_more_than'] == 'on' ? 1 : 0;
+        }
 
         foreach ($configuration->getKeys() as $key) {
             if (isset($input[$key])) {
