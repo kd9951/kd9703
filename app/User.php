@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kd9703\Entities\Media\Account;
+use Kd9703\Resources\Interfaces\Owner\Configuration;
 
 /**
  * Laravelフレームワークが使用するための「認証されたログインユーザー」
@@ -50,6 +51,31 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->account->account_id == config('services.twitter.owner_twitter_id');
+    }
+
+    /**
+     * @var mixed
+     */
+    private $config = null;
+
+    /**
+     * @return mixed
+     */
+    public function config(string $key)
+    {
+        if (!$this->config && $this->account) {
+            $this->config = app(Configuration::class)->get($this->account);
+        }
+
+        return $this->config ? ($this->config->$key ?? null) : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function configRefresh(): void
+    {
+        $this->config = null;
     }
 
     /**

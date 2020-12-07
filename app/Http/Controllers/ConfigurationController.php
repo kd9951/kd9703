@@ -56,5 +56,7 @@ class ConfigurationController extends BaseController
         $configuration = $ConfigurationResource->store($account, $configuration);
 
         return redirect()->route('configuration.show');
+        Auth::user()->configRefresh();
+
     }
 }
