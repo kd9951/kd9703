@@ -75,6 +75,14 @@ class Configuration implements ConfigurationInterface
         }
 
         $configuration = new ConfigrationsEntity([]);
+        foreach (self::COLS as $col) {
+            if (!is_null($model->$col)) {
+                $configuration->$col = $model->$col;
+            }
+        }
+
+        $eloquent = $this->getEloquent(Media::TWITTER(), 'Account');
+        $model    = $eloquent->select(self::COLS_ON_ACCOUNT)->where('account_id', $account->account_id)->first();
 
         foreach (self::COLS_ON_ACCOUNT as $col) {
             if (!is_null($model->$col)) {
@@ -97,7 +105,8 @@ class Configuration implements ConfigurationInterface
 
         foreach (self::COLS_ON_ACCOUNT as $col) {
             if (!is_null($configration->$col)) {
-                $model->$col = $configration->$col;
+                $model->$col   = $configration->$col;
+                $account->$col = $configration->$col;
             }
         }
         $model->save();
