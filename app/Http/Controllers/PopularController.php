@@ -35,7 +35,7 @@ class PopularController extends BaseController
 
         return view('accounts', [
             'title'    => '注目のアカウント',
-            'title_en' => 'Recentry Joined Accounts',
+            'title_en' => 'Featured Accounts',
             'accounts' => $popular_accounts,
         ]);
     }
