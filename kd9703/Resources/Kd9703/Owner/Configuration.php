@@ -70,21 +70,19 @@ class Configuration implements ConfigurationInterface
         $eloquent = new ConfigurationModel();
         $model    = $eloquent->select(self::COLS)->where('account_id', $account->account_id)->first();
 
-        $configration = new ConfigrationsEntity([]);
-        foreach (self::COLS as $col) {
-            if (!is_null($model->$col)) {
-                $configration->$col = $model->$col;
-            }
+        if (!$model) {
+            return new ConfigrationsEntity([]);
         }
-        $model->save();
+
+        $configuration = new ConfigrationsEntity([]);
 
         foreach (self::COLS_ON_ACCOUNT as $col) {
-            if (!is_null($account->$col)) {
-                $configration->$col = $account->$col;
+            if (!is_null($model->$col)) {
+                $configuration->$col = $model->$col;
             }
         }
 
-        return $configration;
+        return $configuration;
     }
 
     /**
