@@ -53,10 +53,13 @@ trait StrictInvokator
         $class = new ReflectionClass($this);
         foreach ($class->getMethod('exec')->getParameters() as $arg) {
             $name = $arg->name;
-            if (!array_key_exists($name, $request)) {
-                continue;
+            if (array_key_exists($name, $request)) {
+                $args[] = $request[$name];
+            } elseif ($arg->isDefaultValueAvailable()) {
+                $args[] = $arg->getDefaultValue();
+            } else {
+                throw new \LogicException("parameter $name required but missing at {$class->name}.");
             }
-            $args[] = $request[$name];
         }
 
         if ($this->systemLogger ?? null) {
