@@ -54,14 +54,16 @@ trait FormatUserObjectForAccount
         // スコア計算 ロジックは(他でも使うなら)切り離したほうが良い
         $account['score'] = 0
          + $account['total_follower']
-         + $account['total_post'] / 5
-         + $account['total_listed'] * 100
-         + ($account['total_listed'] / max($account['total_follower'], 500) * 1000000) // リスト率
+         - $account['total_follow'] * 0.6
+         + $account['total_post'] * 0.2
+         + $account['total_listed'] * 180
+         + ($account['total_listed'] / max($account['total_follower'], 1000) * 500000) // リスト率
         ;
         // 開始からの日数で割る
         $started_at_nishino = '2020-05-10 20:23:07';
         $diff               = time() - max(strtotime($account['started_at'] ?? 'now'), strtotime($started_at_nishino));
-        $account['score']   = floor($account['score'] / max(1, $diff / 60 / 60 / 24 / 10));
+        $days               = max(14, $diff / 60 / 60 / 24 / 10);
+        $account['score']   = floor($account['score'] / $days);
 
         $account = array_filter($account, function ($v) {return !is_null($v);});
 
