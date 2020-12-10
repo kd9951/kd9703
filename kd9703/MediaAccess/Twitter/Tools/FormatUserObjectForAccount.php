@@ -41,10 +41,14 @@ trait FormatUserObjectForAccount
 
         // 最後の投稿日時
         if (isset($user['status']['created_at'])) {
-            $account['last_posted_at'] = Carbon::parse($user['status']['created_at'])->format('Y-m-d H:i:s');
+            $account['last_posted_at'] = Carbon::parse($user['status']['created_at'])
+                ->setTimezone(date_default_timezone_get())
+                ->format('Y-m-d H:i:s');
         }
         if (isset($user['created_at'])) {
-            $account['started_at'] = Carbon::parse($user['created_at'])->format('Y-m-d H:i:s');
+            $account['started_at'] = Carbon::parse($user['created_at'])
+                ->setTimezone(date_default_timezone_get())
+                ->format('Y-m-d H:i:s');
         }
 
         // スコア計算 ロジックは(他でも使うなら)切り離したほうが良い
