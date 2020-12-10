@@ -52,7 +52,7 @@ trait FormatUserObjectForAccount
          + $account['total_follower']
          + $account['total_post'] / 5
          + $account['total_listed'] * 100
-         + ($account['total_listed'] / $account['total_follower'] * 1000000) // リスト率
+         + ($account['total_listed'] / max($account['total_follower'], 500) * 1000000) // リスト率
         ;
         // 開始からの日数で割る
         $started_at_nishino = '2020-05-10 20:23:07';
