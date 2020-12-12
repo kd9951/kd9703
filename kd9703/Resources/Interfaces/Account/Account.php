@@ -23,6 +23,16 @@ interface Account
     public function getAllIds(?Media $media): array;
 
     /**
+     * 指定されたIDのうち存在しないものをアカウントエンティティとして取得
+     */
+    public function getNotExists(Media $mediam, array $account_ids): Accounts;
+
+    /**
+     * 利用中アカウントのうち、最後に詳細情報を取得したアカウント
+     */
+    public function getUsingAccountToBeUpdatedNext(Media $media, int $limit): Accounts;
+
+    /**
      * 最近更新されていないアカウント
      */
     public function getOlds(Media $media, int $limit): Accounts;

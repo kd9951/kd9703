@@ -42,6 +42,7 @@ class Account extends Entity
         'started_at'                => ['?date:Y-m-d H:i:s', null],
         'reviewed_at'               => ['date:Y-m-d H:i:s', null],
         'reviewed_as_using_user_at' => ['date:Y-m-d H:i:s', null],
+        'status_updated_at'         => ['date:Y-m-d H:i:s', null],
         'is_private'                => ['bool', null],
         'is_salon_account'          => ['bool', null],
         'hidden_from_auto_follow'   => ['bool', null],

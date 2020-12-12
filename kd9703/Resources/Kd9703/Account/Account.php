@@ -50,6 +50,8 @@ class Account implements AccountInterface
         'started_at',
         'total_likes',
         'reviewed_at',
+        'reviewed_as_using_user_at',
+        'status_updated_at',
         'is_private',
         'is_salon_account',
     ];
@@ -87,6 +89,51 @@ class Account implements AccountInterface
         $accounts = $eloquent->pluck('account_id')->toArray();
 
         return $accounts;
+    }
+
+    /**
+     * 指定されたIDのうち存在しないものをアカウントエンティティとして取得
+     */
+    public function getNotExists(Media $media, array $account_ids): Accounts
+    {
+        $eloquent             = $this->getEloquent($media, 'Account');
+        $existing_account_ids = $eloquent
+            ->whereIn('account_id', $account_ids)
+            ->pluck('account_id')->toArray();
+
+        $not_exists = array_diff($account_ids, $existing_account_ids);
+
+        $accounts = [];
+        foreach ($not_exists as $account_id) {
+            $accounts[] = [
+                'media'      => $media,
+                'account_id' => $account_id,
+            ];
+        }
+
+        return new Accounts($accounts);
+    }
+
+    /**
+     * 利用中アカウントのうち、一番最後に詳細情報を取得したアカウント
+     */
+    public function getUsingAccountToBeUpdatedNext(Media $media, int $limit): Accounts
+    {
+        $eloquent = $this->getEloquent($media, 'Account');
+        $accounts = $eloquent
+            ->select(array_merge(self::COLS_REQUIRED, self::COLS_OPTION, self::COLS_READONLY))
+            ->orderBy('reviewed_as_using_user_at', 'asc')
+            ->whereNotNull('oauth_access_token')
+            ->where('is_salon_account', true)
+            ->take($limit)
+            ->get()->toArray();
+
+        foreach ($accounts as $idx => $account) {
+            $accounts[$idx]['media']      = $media;
+            $accounts[$idx]['created_at'] = date('Y-m-d H:i:s', strtotime($accounts[$idx]['created_at']));
+        }
+
+        return new Accounts($accounts);
     }
 
     /**

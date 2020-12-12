@@ -24,6 +24,8 @@ class MediaFactory
             \Kd9703\Resources\Interfaces\Analyze\DailyTotal::class               => \Kd9703\Resources\Kd9703\Analyze\DailyTotal::class,
             \Kd9703\Resources\Interfaces\Analyze\Kpi::class                      => \Kd9703\Resources\Kd9703\Analyze\Kpi::class,
 
+            \Kd9703\Resources\Interfaces\Post\Post::class => \Kd9703\Resources\Kd9703\Post\Post::class,
+
             \Kd9703\Resources\Interfaces\Tag\Tag::class         => \Kd9703\Resources\Kd9703\Tag\Tag::class,
             \Kd9703\Resources\Interfaces\Tag\WatchingTag::class => \Kd9703\Resources\Kd9703\Tag\WatchingTag::class,
 
@@ -51,6 +53,7 @@ class MediaFactory
             \Kd9703\MediaAccess\Interfaces\GetUsers::class     => \Kd9703\MediaAccess\Twitter\GetUsers::class,
             \Kd9703\MediaAccess\Interfaces\GetProfile::class   => \Kd9703\MediaAccess\Twitter\GetProfile::class,
             \Kd9703\MediaAccess\Interfaces\GetFollowers::class => \Kd9703\MediaAccess\Twitter\GetFollowers::class,
+            \Kd9703\MediaAccess\Interfaces\GetPosts::class     => \Kd9703\MediaAccess\Twitter\GetPosts::class,
         ],
     ];
 
