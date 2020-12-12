@@ -63,6 +63,7 @@ final class RegistAccount extends Usecase
             'oauth_access_token'  => $token,
             'oauth_access_secret' => $token_secret,
             'reviewed_at'         => Carbon::now()->format('Y-m-d H:i:s'),
+            'status_updated_at'   => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
         // その他付帯情報（情報があるときだけセット）
