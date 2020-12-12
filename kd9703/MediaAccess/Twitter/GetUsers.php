@@ -38,7 +38,10 @@ class GetUsers extends MediaAccess implements GetUsersInterface
 
         $response_json_array = $this->client->getContentAs('json.array');
 
-        if (!is_array($response_json_array)) {
+        if ($this->client->getResponseStatusCode() == 404) {
+            $this->system_logger->notice('no users found.', compact('url', 'param', 'response_json_array'));
+            $formatted = [];
+        } elseif (!is_array($response_json_array)) {
             $this->system_logger->error('/users/lookup returns invalid json.', compact('url', 'param', 'response_json_array'));
             $formatted = [];
         } else {

@@ -78,6 +78,10 @@ final class GetNewUsers extends Usecase
             // $this->systemLogger->debug("Select $target_account_id ($target_account_username : $target_account_fullname) as a target.");
 
             $target_account_id = next($master_ids);
+            if ($target_account_id === false) {
+                $this->systemLogger->debug("No more followers.");
+                break;
+            }
             $this->systemLogger->debug("Select $target_account_id as a target.");
 
             $target_account = new AccountEntity(['account_id' => $target_account_id]);
