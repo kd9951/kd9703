@@ -48,13 +48,14 @@ class Kpi implements KpiInterface
         $end_1d   = $day->format('Y-m-d 23:59:59');
         $start_2w = (new Carbon($day))->subDay(13)->format('Y-m-d 00:00:00');
         $end_2w   = $day->format('Y-m-d 23:59:59');
+        $start_1w = (new Carbon($day))->subDay(6)->format('Y-m-d 00:00:00');
 
         $kpi->date                       = $day->format('Y-m-d');
         $kpi->accounts_total             = $account->where('created_at', '<=', $end_1d)->count();
         $kpi->salon_accounts_total       = $account->where('created_at', '<=', $end_1d)->where('is_salon_account', 1)->count();
-        $kpi->salon_accounts_active      = null;
+        $kpi->salon_accounts_active      = $account->where('created_at', '<=', $end_1d)->where('is_salon_account', 1)->where('status_updated_at', '>=', $start_1w)->count();
         $kpi->registered_accounts_total  = $account->whereNotNull('oauth_access_token')->count();
-        $kpi->registered_accounts_active = null;
+        $kpi->registered_accounts_active = $account->whereNotNull('oauth_access_token')->where('last_logged_in_at', '>=', $start_1w)->count();
         $kpi->rejected_accounts_total    = $account->where('hidden_from_auto_follow', 1)->orWhere('hidden_from_search', 1)->count();
         $kpi->started_accounts_2w        = $account->whereBetween('started_at', [$start_2w, $end_2w])->count();
         $kpi->reviewed_accounts          = $system_log->whereBetween('created_at', [$start_1d, $end_1d])->where('level', 'kpi-account-reviewed')->sum('message');
