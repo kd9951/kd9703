@@ -177,9 +177,9 @@ class Account extends Model
      */
     public function setTotalFollowerAttribute($value)
     {
-        if (($this->attributes['total_follower'] ?? 0) < $value) {
-            $this->attributes['status_updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
-        }
+        // if (($this->attributes['total_follower'] ?? 0) < $value) {
+        //     $this->attributes['status_updated_at'] = Carbon::now()->format('Y-m-d H:i:s');
+        // }
         $this->attributes['total_follower'] = $value;
     }
 
