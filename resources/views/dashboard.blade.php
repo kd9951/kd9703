@@ -75,6 +75,13 @@
     color: #3c4b64;
 }
 
+.body-secret {
+    font-size: 0.8em;
+    background: #0000000C;
+    padding: 0.75em 2em;
+    border: 1px solid #00000020;
+    border-radius: 0.5em;
+}
 </style>
 
 <div class="container">

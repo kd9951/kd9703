@@ -55,7 +55,7 @@ class DashboardController extends BaseController
         $recent_communicatated_accounts = $AccountResource->getCommunicatingAccounts($account,
             null,
             new PaginateInput([
-                'per_page' => 6,
+                'per_page' => 10,
                 'page'     => 1,
             ]), new SortInputs([[
                 'key'   => 'count',
@@ -69,7 +69,7 @@ class DashboardController extends BaseController
             null,
             null,
             new PaginateInput([
-                'per_page' => 6,
+                'per_page' => 5,
                 'page'     => 1,
             ]), new SortInputs([[
                 'key'   => 'posted_at',
