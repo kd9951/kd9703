@@ -3,7 +3,8 @@
 
 @section('content')
 <style>
-.account-link {
+.account-link,
+.post-link {
     color: #3c4b64;
     margin: 1.5rem -0.5rem -0.5rem;
     padding: 0.5rem;
@@ -28,8 +29,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.account-link:hover {
+.account-link:hover,
+.post-link:hover {
     background-color: #e0f0ff;
+    text-decoration: none;
 }
 .account-link .c-avatar {
     min-width: 48px;
@@ -43,6 +46,35 @@
 .specs > div {
     font-size: 0.9em;
 }
+
+.sub-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    position: absolute;
+    right: -6px;
+    bottom: -16px;
+    min-width: 24px !important;
+}
+
+.sub-avatar .c-avatar-img {
+    border: 2px solid #fff;
+}
+
+.post-body {
+    font-size: 0.9em;
+}
+
+.post-link .names {
+    font-size: 0.85em;
+    color: #0008;
+}
+
+.post-link .fullname {
+    font-weight: bold;
+    margin-right: 0.5em;
+    color: #3c4b64;
+}
+
 </style>
 
 <div class="container">
@@ -167,7 +199,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
             <div class="card-body">
                 <div class="d-flex justify-content-between mb-3">
                     <div>
-                        <h4 class="card-title mb-0">検索</h4>
+                        <h4 class="card-title mb-0">アカウント検索</h4>
                         <div class="small text-muted">Account Search</div>
                     </div>
                 </div>
@@ -294,6 +326,136 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                                         <div class="ml-2"><b>{{ number_format($account->total_follower) }}</b> フォロワー</div>
                                     </div>
                                 </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-6 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h4 class="card-title mb-0">コミュニケーション検索</h4>
+                        <div class="small text-muted">Account Search</div>
+                    </div>
+                </div>
+                <div>
+                    <form action="{{route('communications.index')}}" method="GET">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1">ユーザー名・アカウント名（部分一致）</label>
+                            <input type="username_partial" class="form-control" id="username_partial" name="username_partial">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1">キーワード</label>
+                            <input type="keyword" class="form-control" id="keyword" name="keyword">
+                        </div>
+
+                        <button type="submit" class="btn-block btn btn-primary">検索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h4 class="card-title mb-0">よく会話しているアカウント</h4>
+                        <div class="small text-muted">Recentry Communicated Accounts</div>
+                    </div>
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with buttons">
+                        <a  href="{{route('communicating-accounts.index')}}" class="btn btn-default" type="button"> すべて見る </a>
+                    </div>
+                </div>
+                <div>
+                    @foreach($recent_communicatated_accounts as $account)
+                        @if($account->username)
+                        <a class="account-link d-flex" href="{{route('communications.index', ['username' => $account->username])}}">
+                            @if($account->img_thumnail_url)
+                                <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
+                            @endif
+                            <div style="width: 100%">
+                                <div class="justify-content-between align-items-center">
+                                    <div class="names">
+                                            <div class="fullname">
+                                                {{ $account->fullname }}
+                                                @if(
+                                                    $show_new_by == Kd9703\Constants\ShowNew::BY_CREATED_AT
+                                                    && $account->created_at >= $show_new_date
+                                                    || $show_new_by == Kd9703\Constants\ShowNew::BY_STARTED_AT
+                                                    && $account->started_at >= $show_new_date
+                                                )
+                                                <span class="badge bg-warning text-white">NEW</span>
+                                                @endif
+                                            </div>
+
+                                            <div class="username">{{ $account->username }}</div>
+                                            <div class="location">{{ $account->location }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h4 class="card-title mb-0">最近のコミュニケーション</h4>
+                        <div class="small text-muted">Recentry Communicated Posts</div>
+                    </div>
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with buttons">
+                        <a  href="{{route('communications.index')}}" class="btn btn-default" type="button"> すべて見る </a>
+                    </div>
+                </div>
+                <div>
+                    @foreach($recent_communicatated_posts as $post)
+                        <a class="post-link d-flex" href="{{$post->url}}">
+                            @if($post->account_id == Auth::user()->getAccount()->account_id)
+                                @if($post->account->img_thumnail_url)
+                                    <div class="c-avatar c-avatar-lg mr-3">
+                                        <img class="c-avatar-img" src="{{ $post->account->img_thumnail_url }}" alt="">
+                                        <div class="sub-avatar c-avatar"><img class="c-avatar-img" src="{{ $post->in_reply_to_account->img_thumnail_url }}" alt=""></div>
+                                    </div>
+                                @endif
+                            @else
+                                @if($post->account->img_thumnail_url)
+                                    <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $post->account->img_thumnail_url }}" alt=""></div>
+                                @endif
+                            @endif
+                            <div style="width: 100%">
+                                <div class="justify-content-between align-items-center">
+                                    <div class="names d-flex align-items-center">
+                                            <div class="fullname">
+                                                {{ $post->account->fullname }}
+                                            </div>
+
+                                            {{-- <div class="username">{{'@'}}{{ $post->account->username }}</div> --}}
+                                            <div class="username ml-auto">{{ date('n月j日', strtotime($post->posted_at)) }}</div>
+                                    </div>
+                                </div>
+                                @if($post->account_id == Auth::user()->getAccount()->account_id || $post->in_reply_to_account_id == Auth::user()->getAccount()->account_id)
+                                <div class="post-body mt-1">
+                                    {{$post->body}}
+                                </div>
+                                @else
+                                <div class="body-secret">このツイートはフォローしていないアカウントのツイートかもしれないので表示を制限しています。クリックして公式サイトで確認してください。</div>
+                                @endif
                             </div>
                         </a>
                     @endforeach

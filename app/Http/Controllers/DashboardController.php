@@ -12,6 +12,7 @@ use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Entities\Sort\Inputs as SortInputs;
 use Kd9703\Resources\Interfaces\Account\Account;
 use Kd9703\Resources\Interfaces\Analyze\Kpi;
+use Kd9703\Resources\Interfaces\Post\Post;
 
 class DashboardController extends BaseController
 {
@@ -23,6 +24,7 @@ class DashboardController extends BaseController
     public function index(
         // TODO UseCaseであるべき]
         Account $AccountResource,
+        Post $postResource,
         Kpi $KpiResource
     ) {
         $account = Auth::user()->getAccount();
@@ -49,17 +51,43 @@ class DashboardController extends BaseController
         $recent_accounts->suffle();
         $recent_accounts = $recent_accounts->slice(0, 5);
 
-        $total_salon_accounts = 0; // $AccountResource->search($account->media)->count();
+        // 最近会話したアカウント
+        $recent_communicatated_accounts = $AccountResource->getCommunicatingAccounts($account,
+            null,
+            new PaginateInput([
+                'per_page' => 6,
+                'page'     => 1,
+            ]), new SortInputs([[
+                'key'   => 'count',
+                'order' => 'desc',
+            ]]));
 
+        // 最近のコミュニケーション
+        $recent_communicatated_posts = $postResource->getCommunications($account,
+            null,
+            null,
+            null,
+            null,
+            new PaginateInput([
+                'per_page' => 6,
+                'page'     => 1,
+            ]), new SortInputs([[
+                'key'   => 'posted_at',
+                'order' => 'desc',
+            ]]));
+
+        // KPI
         $kpis = $KpiResource->getList(
             Carbon::parse('-14 days')->format('Y-m-d'),
             Carbon::now()->format('Y-m-d')
         );
 
         return view('dashboard', [
-            'popular_accounts' => $popular_accounts,
-            'recent_accounts'  => $recent_accounts,
-            'kpis'             => $kpis,
+            'popular_accounts'               => $popular_accounts,
+            'recent_accounts'                => $recent_accounts,
+            'recent_communicatated_accounts' => $recent_communicatated_accounts,
+            'recent_communicatated_posts'    => $recent_communicatated_posts,
+            'kpis'                           => $kpis,
         ]);
     }
 }

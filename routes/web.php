@@ -38,7 +38,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/configuration', 'ConfigurationController@show')->name('configuration.show');
     Route::put('/configuration', 'ConfigurationController@update')->name('configuration.update');
 
-    // Route::resource('/system_logs', 'SystemLogController')->only(['index', 'show']);
-    // Route::resource('/owner_logs', 'OwnerLogController')->only(['index', 'show']);
+    Route::resource('/system_logs', 'SystemLogController')->only(['index', 'show']);
+    Route::resource('/owner_logs', 'OwnerLogController')->only(['index', 'show']);
     // Route::resource('/engagements', 'EngagementController')->only(['index']);
+
+    Route::get('/communications/{username?}', 'CommunicationController@index')->name('communications.index');
+    Route::get('/communicating-accounts', 'CommunicatingAccountController@index')->name('communicating-accounts.index');
 });
