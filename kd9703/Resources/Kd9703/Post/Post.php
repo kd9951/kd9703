@@ -119,32 +119,88 @@ class Post implements PostInterface
     /**
      * 他のアカウントとコミュニケーションしている投稿
      */
-    public function getCommunications(Account $account, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Posts
-    {
+    public function getCommunications(
+        Account $account,
+        ?string $target_account_id = null,
+        ?string $target_username = null,
+        ?string $username_partial = null,
+        ?string $keyword = null,
+        ?PaginateInput $paginateInput = null,
+        ?SortInputs $sortInputs = null
+    ): Posts {
         // 最近のコミュニケーションポスト
         $eloquent = $this->getEloquent($account->media, 'PostRecipient');
-        $query    = $eloquent->select('post_id', DB::raw('MAX(posted_at) as posted_at'))->where(function ($q) use ($account) {
-            $q->where('from_account_id', $account->account_id);
-            $q->orWhere('to_account_id', $account->account_id);
-        })
-            ->groupBy('post_id')
-            ->orderBy('posted_at', 'desc');
+        $tableMain = $eloquent->getTable();
+        $query = $eloquent->select("$tableMain.post_id", DB::raw("MAX($tableMain.posted_at) as posted_at"));
+
+        // ターゲットアカウント検索
+        if ($target_account_id || $target_username || $username_partial) {
+            $accountEloquent = $this->getEloquent($account->media, 'Account');
+            $queryAccount           = $accountEloquent->select('account_id');
+            if ($target_account_id) {
+                $target_account_ids = [$target_account_id];
+            } elseif ($target_username) {
+                $queryAccount->where('username', $target_username);
+                $target_account_id = $queryAccount->first()->account_id ?? null; 
+                $target_account_ids = $target_account_id ? [$target_account_id] : [];
+            } elseif ($username_partial) {
+                $this->searchKeyword($queryAccount, $username_partial ?? '', ['username', 'fullname']);
+                $target_account_ids = $queryAccount->pluck('account_id')->toArray();
+            }
+            // dd($target_account_ids, $target_account_id);
+            unset($queryAccount, $target_account_id);
+
+            $target_account_ids = array_diff($target_account_ids ?? [], [$account->account_id]);
+            if (empty($target_account_ids)) {
+                return (new Posts([]));
+            }
+            // ターゲットあり
+            $query = $query->where(function ($q) use ($account, $target_account_ids) {
+                $q->whereIn('to_account_id', $target_account_ids);
+                $q->where('from_account_id', $account->account_id);
+                $q->orWhere('to_account_id', $account->account_id);
+                $q->whereIn('from_account_id', $target_account_ids);
+            });
+
+        } else {
+            // ターゲットなし（自分以外すべて）
+            $query = $query->where(function ($q) use ($account) {
+                $q->where('to_account_id', '<>', $account->account_id);
+                $q->where('from_account_id', $account->account_id);
+                $q->orWhere('to_account_id', $account->account_id);
+                $q->where('from_account_id', '<>', $account->account_id);
+            });
+        }
+
+        // ポスト本文キーワード検索
+        if ($keyword) {
+            $eloquentPost = $this->getEloquent($account->media, 'Post');
+            $tablePost = $eloquentPost->getTable();
+
+            $query = $query->join("$tablePost as sub_p", 'sub_p.post_id', '=', "$tableMain.post_id");
+
+            $query = $this->searchKeyword($query, $keyword ?? '', ["sub_p.body"]);
+        }
+
+        $query = $query->groupBy("$tableMain.post_id");
+        $query = $query->orderBy('posted_at', 'desc');
+        // dd($query->toSql(), $query->getBindings());
 
         // ソート
-        // if ($sortInputs && $sortInputs->count()) {
-        //     $applied = [];
-        //     foreach ($sortInputs as $sortInput) {
-        //         $key = strtolower($sortInput->key);
-        //         if (!isset($applied[$key])) {
-        //             $eloquent->orderBy($key, $sortInput->order);
-        //             $applied[$key] = true;
-        //         }
-        //     }
-        //     unset($applied);
-        // } else {
-        //     // デフォルトソート
-        //     $eloquent->orderBy('posted_at', 'desc');
-        // }
+        if ($sortInputs && $sortInputs->count()) {
+            $applied = [];
+            foreach ($sortInputs as $sortInput) {
+                $key = strtolower($sortInput->key);
+                if (!isset($applied[$key])) {
+                    $query->orderBy($key, $sortInput->order);
+                    $applied[$key] = true;
+                }
+            }
+            unset($applied);
+        } else {
+            // デフォルトソート
+            $query->orderBy('posted_at', 'desc');
+        }
 
         // ページネーション
         if ($paginateInput && $paginateInput->per_page) {
@@ -176,24 +232,6 @@ class Post implements PostInterface
         }
 
         return $this->packPost($account, $posts)->withPaginate($paginateOutput);
-    }
-
-    /**
-     * コミュニケーションしているアカウントIDを取得
-     */
-    public function getCommunicatingAccountIds(Account $account, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Posts
-    {
-        // 最近コミュニケーションしたアカウント
-        // $posts = Post::where('account_id', $account->account_id)->orderBy('posted_at', 'desc')->paginate(5);
-
-        // $sub_from = PostRecipient::select('to_account_id as account_id', 'posted_at')->where('from_account_id', $account->account_id);
-        // $sub_to   = PostRecipient::select('from_account_id as account_id', 'posted_at')->where('to_account_id', $account->account_id);
-        // $sub      = $sub_to->union($sub_from);
-
-        // $query = DB::table(DB::raw("({$sub->toSql()}) as sub"))->mergeBindings($sub->getQuery())
-        //     ->select('account_id', DB::raw('MAX(posted_at) last_posted_at'))
-        //     ->groupBy('account_id');
-
     }
 
     /**

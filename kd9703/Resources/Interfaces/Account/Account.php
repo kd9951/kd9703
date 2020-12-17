@@ -18,6 +18,13 @@ interface Account
     public function getOne(?Media $media, string $account_id): ?AccountEntity;
 
     /**
+     * @param  Media|null           $media
+     * @param  string               $username
+     * @return AccountEntity|null
+     */
+    public function getByUsername(?Media $media, string $username): ?AccountEntity;
+
+    /**
      * @param int $account_id
      */
     public function getAllIds(?Media $media): array;
@@ -41,6 +48,11 @@ interface Account
      * 注目のアカウント
      */
     public function getPops(Media $media, ?PaginateInput $paginateInput = null): Accounts;
+
+    /**
+     * 最近コミュニケーションとったアカウント
+     */
+    public function getCommunicatingAccounts(AccountEntity $account, ?string $username_partial = null, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Accounts;
 
     /**
      * 検索

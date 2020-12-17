@@ -23,11 +23,15 @@ interface Post
     /**
      * 他のアカウントとコミュニケーションしている投稿
      *
-     * @param Account        $account
-     * @param PaginateInput  $paginateInput
-     * @param nullSortInputs $sortInputs
+     * @param  Account            $account
+     * @param  string|null        $target_account_id
+     * @param  string|null        $username_partial
+     * @param  string|null        $keyword
+     * @param  PaginateInput|null $paginateInput
+     * @param  SortInputs|null    $sortInputs
+     * @return Posts
      */
-    public function getCommunications(Account $account, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Posts;
+    public function getCommunications(Account $account, ?string $target_account_id = null, ?string $target_username = null,  ?string $username_partial = null, ?string $keyword = null, ?PaginateInput $paginateInput = null, ?SortInputs $sortInputs = null): Posts;
 
     /**
      * @param Account           $account
