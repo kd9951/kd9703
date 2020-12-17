@@ -437,7 +437,9 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                                 @if($post->account->img_thumnail_url)
                                     <div class="c-avatar c-avatar-lg mr-3">
                                         <img class="c-avatar-img" src="{{ $post->account->img_thumnail_url }}" alt="">
+                                        @if($post->in_reply_to_account)
                                         <div class="sub-avatar c-avatar"><img class="c-avatar-img" src="{{ $post->in_reply_to_account->img_thumnail_url }}" alt=""></div>
+                                        @endif
                                     </div>
                                 @endif
                             @else
