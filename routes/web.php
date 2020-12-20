@@ -45,3 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/communications/{username?}', 'CommunicationController@index')->name('communications.index');
     Route::get('/communicating-accounts', 'CommunicatingAccountController@index')->name('communicating-accounts.index');
 });
+
+// 管理者のみのページ
+Route::group(['middleware' => ['auth', 'admin']], function () {
+    Route::get('switchuser/{username}', 'Admin\SwitchUserController@get')->name('logout.get');
+});
