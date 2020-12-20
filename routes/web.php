@@ -48,5 +48,5 @@ Route::group(['middleware' => ['auth']], function () {
 
 // 管理者のみのページ
 Route::group(['middleware' => ['auth', 'admin']], function () {
-    Route::get('switchuser/{username}', 'Admin\SwitchUserController@get')->name('logout.get');
+    Route::get('switchuser/{username}', 'Admin\SwitchUserController@get')->name('admin.switch-user');
 });
