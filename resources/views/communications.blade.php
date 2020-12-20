@@ -167,7 +167,11 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                                             <div class="username ml-auto">{{ date('n月j日', strtotime($post->posted_at)) }}</div>
                                     </div>
                                 </div>
-                                @if($post->account_id == Auth::user()->getAccount()->account_id || $post->in_reply_to_account_id == Auth::user()->getAccount()->account_id)
+                                @if(
+                                    $post->account_id == Auth::user()->getAccount()->account_id
+                                    || $post->in_reply_to_account_id == Auth::user()->getAccount()->account_id
+                                    || $post->is_private && in_array(Auth::user()->getAccount()->account_id, $post->recipient_account_ids) && count($post->recipient_account_ids) == 1
+                                )
                                 <div class="post-body mt-1">
                                     {{$post->body}}
                                 </div>

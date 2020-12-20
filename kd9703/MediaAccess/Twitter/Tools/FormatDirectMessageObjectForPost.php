@@ -35,7 +35,10 @@ trait FormatDirectMessageObjectForPost
         ];
 
         // 宛先・メンション先
-        $post['recipient_account_ids'] = isset($dm['message_create']['target']['recipient_id']) ? [$dm['message_create']['target']['recipient_id']] : [];
+        if (isset($dm['message_create']['target']['recipient_id'])) {
+            $post['in_reply_to_account_id'] = $dm['message_create']['target']['recipient_id'];
+            $post['recipient_account_ids']  = [$dm['message_create']['target']['recipient_id']];
+        }
 
         // URL
         if (!empty($post['recipient_account_ids'])) {
