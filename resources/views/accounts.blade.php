@@ -67,7 +67,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                             @if($account->img_thumnail_url)
                                 <div class="c-avatar c-avatar-lg mr-3"><img class="c-avatar-img" src="{{ $account->img_thumnail_url }}" alt=""></div>
                             @endif
-                            <div style="width: 100%">
+                            <div style="width: calc(100% - 48px - 1rem)">
                                 {{-- 上段 --}}
                                 <div class="d-lg-flex justify-content-between align-items-center">
                                     <div class="names">
