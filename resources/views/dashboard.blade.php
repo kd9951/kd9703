@@ -115,7 +115,8 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
             <div class="card text-white bg-gradient-info">
                 <div class="card-body card-body pb0 d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="text-value-lg">{{(($kpis[0] ?? null) && $kpis[0]->salon_accounts_active) ? number_format($kpis[0]->salon_accounts_active) : 'not available'}}</div>
+                        {{-- <div class="text-value-lg">{{(($kpis[0] ?? null) && $kpis[0]->salon_accounts_active) ? number_format($kpis[0]->salon_accounts_active) : 'not available'}}</div> --}}
+                        <div class="text-value-lg">not available</div>
                         <div>アクティブアカウント数</div>
                     </div>
                 </div>
