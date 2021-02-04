@@ -20,6 +20,16 @@ class IndexController extends Controller
      */
     public function index()
     {
+        switch (config('app.salon')) {
+            // 中田敦彦オンラインサロン
+            case 'progress':
+                return view('welcome-progress');
+
+            // 西野亮廣エンタメ研究所
+            case 'nishino':
+                return view('welcome');
+        }
+
         return view('welcome');
     }
 }

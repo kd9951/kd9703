@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'salon' => env('SALON', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -172,6 +174,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\Kd9703ServiceProvider::class,
+        App\Providers\SalonServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
