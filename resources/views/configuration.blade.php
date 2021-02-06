@@ -56,8 +56,8 @@
                                 <div class="col-md-7">
                                     新着アカウント表示基準
                                     <div class="text-info mb-2"><small>
-                                        Salon-Twitterでは既存メンバーのフォロワさん等を辿って新メンバーを探しているため、
-                                        Twitterのアカウント開設日とSalon-Twitterに掲載されるタイミングが異なります
+                                        {{config('app.name')}}では既存メンバーのフォロワさん等を辿って新メンバーを探しているため、
+                                        Twitterのアカウント開設日と{{config('app.name')}}に掲載されるタイミングが異なります
                                         （そもそもTwitterアカウントを以前に作ったものを使っていることもありますし）。
                                         ダッシュボードの「新着」は、Twitterのアカウント開設日を基準にしています。</small></div>
                                 </div>
@@ -75,7 +75,7 @@
                                 <div class="col-md-7">
                                     新着アカウント表示期間
                                     <div class="text-info mb-2"><small>
-                                            ご自身のSalon-Twitterの「ログイン頻度・新着チェック頻度」に合わせておくと便利です。
+                                            ご自身の{{config('app.name')}}の「ログイン頻度・新着チェック頻度」に合わせておくと便利です。
                                         </small></div>
                                 </div>
                                 <div class="col-md-5">
