@@ -16,7 +16,7 @@ class ShowNew extends Enum
 
     const LABEL_JA = [
         self::HIDDEN        => '表示しない',
-        self::BY_CREATED_AT => 'Salon-Twitterに登録・掲載された日',
+        self::BY_CREATED_AT => 'このアプリが発見・掲載された日',
         self::BY_STARTED_AT => 'Twitterのアカウント開設日',
     ];
 }
