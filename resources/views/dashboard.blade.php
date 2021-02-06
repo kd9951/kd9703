@@ -220,7 +220,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
 
                         <div class=" mb-3">
                             @foreach(config('app.salon') == 'progress' ? [
-                                'DMご遠慮ください',
+                                'DMはご遠慮ください',
                                 'ラグナリオ',
                                 'ウォルクス',
                                 'アリスカーナ',
