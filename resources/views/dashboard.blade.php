@@ -230,6 +230,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                                 '舞台',
                                 'Youtuber',
                                 '配信',
+                                'XENO',
                                 '大阪 エンジニア',
                                 'クラファン',
                             ] : [
