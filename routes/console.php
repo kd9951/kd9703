@@ -425,10 +425,17 @@ Artisan::command('app:test-media-access', function (
     \Kd9703\MediaBinder $MediaBinder
 ) {
 
-    // $account = $AccountResource->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
-    $account = $AccountResource->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
+    $account = $AccountResource->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+    // $account = $AccountResource->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
 
     $MediaBinder->bind($account);
+
+    //////////////////////////////////////////////////////////
+    $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\GetFollowersIncoming::class);
+    $result   = ($GetFollowersIncomingInterface)([
+        'account'        => $account,
+    ]);
+    dd($result);
 
     //////////////////////////////////////////////////////////
     $GetPosts = app(\Kd9703\MediaAccess\Interfaces\GetPosts::class);
