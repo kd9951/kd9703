@@ -46,6 +46,19 @@ class SocialiteController extends BaseController
      */
     function login(string $provider)
     {
+        if (config("services.$provider.pin_based")) {
+            $url   = $this->getProvider($provider)->redirect()->getTargetUrl();
+            parse_str(parse_url($url, PHP_URL_QUERY), $queries);
+
+            $token = $queries['oauth_token'] ?? '';
+
+            return view('auth.social.pin')->with([
+                'provider'     => $provider,
+                'callback_url' => $url,
+                'oauth_token'  => $token,
+            ]);
+        }
+
         return $this->getProvider($provider)->redirect();
     }
 

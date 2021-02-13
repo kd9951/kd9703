@@ -37,5 +37,7 @@ return [
         // 'access_token'        => env('TWITTER_API_ACCESS_TOKEN'),
         // 'access_token_secret' => env('TWITTER_API_ACCESS_TOKEN_SECRET'),
         'redirect'         => env('TWITTER_CALLBACK_URL'),
+        'pin_based'        => env('TWITTER_AUTH_PIN_BASED', false) ? true : false,
+        'pin_auth_url'     => env('TWITTER_PIN_AUTH_URL', ''),
     ],
 ];

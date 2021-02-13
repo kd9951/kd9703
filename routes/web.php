@@ -21,6 +21,7 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::get('auth/{provider}/login', 'Auth\SocialiteController@login')->name('auth.social.login');
     Route::get('auth/{provider}/callback', 'Auth\SocialiteController@callback')->name('auth.social.callback');
+    Route::get('auth/{provider}/pin-auth', 'Auth\SocialiteController@callback')->name('auth.social.pin-auth');
     Route::post('auth/{provider}/register', 'Auth\SocialiteController@register')->name('auth.social.register');
 });
 
