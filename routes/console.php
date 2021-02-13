@@ -431,6 +431,22 @@ Artisan::command('app:test-media-access', function (
     $MediaBinder->bind($account);
 
     //////////////////////////////////////////////////////////
+    $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\AcceptFollowerIncoming::class);
+    $result   = ($GetFollowersIncomingInterface)([
+        'account'        => $account,
+        'target_account_id' => 1349289029754179584,
+    ]);
+    dd($result->toArray());
+        // 2 => 1356411981444435968
+        // 3 => 1349289029754179584
+        // 4 => 1359284005745528832
+        // 5 => 1343469411873669120
+        // 6 => 1353510012052676608
+        // 7 => 1350835910665883650
+        // 8 => 1348988592563970049
+        // 9 => 1336935071974998016
+
+    //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\GetFollowersIncoming::class);
     $result   = ($GetFollowersIncomingInterface)([
         'account'        => $account,
