@@ -4,12 +4,14 @@ use Crawler\HttpClients\TwitterApi;
 use Illuminate\Support\Facades\Artisan;
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account;
+use Kd9703\Entities\Worker\Job;
 
 /**
  * すべてのアカウントの一般公開情報を更新
  */
 Artisan::command('app:update-users {limit_sec=50}', function (
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
+    \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger,
     \Kd9703\Resources\Interfaces\Account\Account $Account,
     \Kd9703\MediaBinder $MediaBinder
 ) {
@@ -18,6 +20,15 @@ Artisan::command('app:update-users {limit_sec=50}', function (
 
         $MediaBinder->bind($account);
 
+        $job = new Job([
+            'media' => $account->media,
+            'account_id' => $account->account_id,
+            'job_id' => time(),
+            'job_class' => 'app:update-users'
+        ]);
+        $systemLogger->startJob($job, time());
+        $ownerLogger->startJob($job, time());
+        
         $UpdateUsers = app(\Kd9703\Usecases\UpdateUsers::class);
 
         $result = ($UpdateUsers)([
@@ -36,6 +47,11 @@ Artisan::command('app:update-users {limit_sec=50}', function (
 
         echo (string) $e;
     }
+
+    if (isset($job)) {
+        $systemLogger->endJob($job, time());
+        $ownerLogger->endJob($job, time());
+    }
 });
 
 /**
@@ -43,15 +59,26 @@ Artisan::command('app:update-users {limit_sec=50}', function (
  */
 Artisan::command('app:update-using-user {limit_sec=50}', function (
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
+    \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger,
     \Kd9703\Resources\Interfaces\Account\Account $Account,
     \Kd9703\MediaBinder $MediaBinder
 ) {
     try {
-        $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
+        // $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
         // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
-        // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+        $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
 
         $MediaBinder->bind($account);
+
+        $job = new Job([
+            'media' => $account->media,
+            'account_id' => $account->account_id,
+            'job_id' => time(),
+            'job_class' => 'app:update-using-user'
+        ]);
+        $systemLogger->startJob($job, time());
+        $ownerLogger->startJob($job, time());
+                
         $reviewed_as_using_user_at = $account->reviewed_as_using_user_at ?? 'NULL';
         $systemLogger->info("UpdateUsingUser selected {$account->username}({$account->account_id}) last updated at {$reviewed_as_using_user_at}.");
 
@@ -73,10 +100,16 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
 
         echo (string) $e;
     }
+
+    if (isset($job)) {
+        $systemLogger->endJob($job, time());
+        $ownerLogger->endJob($job, time());
+    }
 });
 
 Artisan::command('app:get-new-users {limit_sec=15}', function (
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
+    \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger,
     \Kd9703\Resources\Interfaces\Account\Account $Account,
     \Kd9703\MediaBinder $MediaBinder
 ) {
@@ -85,6 +118,15 @@ Artisan::command('app:get-new-users {limit_sec=15}', function (
 
         $MediaBinder->bind($account);
 
+        $job = new Job([
+            'media' => $account->media,
+            'account_id' => $account->account_id,
+            'job_id' => time(),
+            'job_class' => 'app:get-new-users'
+        ]);
+        $systemLogger->startJob($job, time());
+        $ownerLogger->startJob($job, time());
+    
         $GetNewUsers = app(\Kd9703\Usecases\GetNewUsers::class);
 
         $result = ($GetNewUsers)([
@@ -103,10 +145,16 @@ Artisan::command('app:get-new-users {limit_sec=15}', function (
 
         echo (string) $e;
     }
+
+    if (isset($job)) {
+        $systemLogger->endJob($job, time());
+        $ownerLogger->endJob($job, time());
+    }
 });
 
 Artisan::command('app:update-kpi', function (
-    \Kd9703\Logger\Interfaces\SystemLogger $systemLogger
+    \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
+    \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger
 ) {
     try {
         $UpdateKpi = app(\Kd9703\Usecases\UpdateKpi::class);
@@ -362,16 +410,35 @@ Artisan::command('app:update-kpi', function (
  */
 Artisan::command('app:test', function (
     \Kd9703\Resources\Interfaces\Account\Account $Account,
-    \Kd9703\MediaBinder $MediaBinder
+    \Kd9703\MediaBinder $MediaBinder,
+    \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
+    \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger
 ) {
-
-    // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
-    $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
+    $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+    // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
 
     $MediaBinder->bind($account);
 
+    $job = new Job([
+        'media' => $account->media,
+        'account_id' => $account->account_id,
+        'job_id' => time(),
+        'job_class' => 'app:test'
+    ]);
+    $systemLogger->startJob($job, time());
+    $ownerLogger->startJob($job, time());
+
     ///////////////////////////////////////////////////////////////////////
-    $UpdateKpi = app(\Kd9703\Usecases\UpdateKpi::class);
+    $AutoFollowAccept = app(\Kd9703\Usecases\AutoFollowAccept::class);
+
+    $result = ($AutoFollowAccept)([
+        'account'   => $account,
+        'limit_sec' => 30,
+    ]);
+    dd($result);
+
+    ///////////////////////////////////////////////////////////////////////
+    $UpdateKpi = app(\Kd9703\Usecases\UpdateUsingUser::class);
 
     $result = ($UpdateKpi)([
         'account'   => $account,
@@ -415,6 +482,11 @@ Artisan::command('app:test', function (
     //     'target_accounts'   => new Accounts([$account]),
     //     'limit_sec' => 60,
     // ]);
+
+    if (isset($job)) {
+        $systemLogger->endJob($job, time());
+        $ownerLogger->endJob($job, time());
+    }
 });
 
 /**
@@ -445,21 +517,21 @@ Artisan::command('app:test-media-access', function (
         'target_account_id' => 1349289029754179584,
     ]);
     dd($result->toArray());
-        // 2 => 1356411981444435968
-        // 3 => 1349289029754179584
-        // 4 => 1359284005745528832
-        // 5 => 1343469411873669120
-        // 6 => 1353510012052676608
-        // 7 => 1350835910665883650
-        // 8 => 1348988592563970049
-        // 9 => 1336935071974998016
+    //     // 2 => 1356411981444435968
+    //     // 3 => 1349289029754179584
+    //     // 4 => 1359284005745528832
+    //     // 5 => 1343469411873669120
+    //     // 6 => 1353510012052676608
+    //     // 7 => 1350835910665883650
+    //     // 8 => 1348988592563970049
+    //     // 9 => 1336935071974998016
 
     //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\GetFollowersIncoming::class);
     $result   = ($GetFollowersIncomingInterface)([
         'account'        => $account,
     ]);
-    dd($result);
+    dd($result->pluck('account_id'));
 
     //////////////////////////////////////////////////////////
     $GetPosts = app(\Kd9703\MediaAccess\Interfaces\GetPosts::class);
@@ -498,12 +570,122 @@ Artisan::command('app:test-api', function (
     \Kd9703\MediaBinder $MediaBinder
 ) {
     try {
-        // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
-        $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
+        $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+        // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
 
         $MediaBinder->bind($account);
 
         $client = app(\Crawler\HttpClientInterface::class);
+
+        // // フォローリクエスト一覧
+        // $client->get('https://api.twitter.com/1.1/friendships/incoming.json', [
+        //     // 'count' => 3,
+        //     // 'cursor ' => null,
+        // ]);
+        // $result = $client->getContentAs('json.array');
+        // dd($account->toArray(), $client->getResponseStatusCode(), $result);
+
+        // 0 => 1347935963507429381
+        // 1 => 1351412772454633475
+        // 2 => 1356411981444435968
+        // 3 => 1349289029754179584
+        // 4 => 1359284005745528832
+        // 5 => 1343469411873669120
+        // 6 => 1353510012052676608
+        // 7 => 1350835910665883650
+        // 8 => 1348988592563970049
+        // 9 => 1336935071974998016
+        // 10 => 1352832080971894784
+        // 11 => 1352597942964613120
+        // 12 => 1352951487245078534
+        // 13 => 1351490476663140352
+        // 14 => 1348988745366663168
+        // 15 => 1287051474975875072
+        // 16 => 1351509516647501826
+        // 17 => 1351014324446375945
+        // 18 => 1359875156529745921
+        // 19 => 1355684624979124224
+        // 20 => 1126058177340960768
+        // 21 => 1351104632148340736
+        // 22 => 1359029409122951172
+
+        // フォローリクエスト承認
+        $client->post('https://api.twitter.com/1/friendships/accept.json', [
+            'user_id' => '1351412772454633475',
+            // 'cursor ' => null,
+        ]);
+        $result = $client->getContentAs('json.array');
+        dd($client->getResponseStatusCode(), $result);
+        // 410
+        // null
+        // 200
+        // array:55 [
+        //   "id" => 1350802661759598599
+        //   "id_str" => "1350802661759598599"
+        //   "name" => "柳川佑平@愛知県"
+        //   "screen_name" => "PROGRESSYUHEI"
+        //   "location" => "愛知県"
+        //   "url" => null
+        //   "description" => "システム開発&運送事業の会社を経営しています！｜経済の血液と言われる
+        // 物流業界の原動力になりたいと思い21歳の時、起業しました。｜wolx｜色々な方々と繋がりをもっ
+        // て楽しくコミュニケーションできたら嬉しいです！｜#中田敦彦オンラインサロン"
+        //   "protected" => true
+        //   "followers_count" => 162
+        //   "fast_followers_count" => 0
+        //   "normal_followers_count" => 162
+        //   "friends_count" => 157
+        //   "listed_count" => 1
+        //   "created_at" => "Sun Jan 17 13:50:34 +0000 2021"
+        //   "favourites_count" => 25
+        //   "utc_offset" => null
+        //   "time_zone" => null
+        //   "geo_enabled" => false
+        //   "verified" => false
+        //   "statuses_count" => 0
+        //   "media_count" => 0
+        //   "lang" => null
+        //   "contributors_enabled" => false
+        //   "is_translator" => false
+        //   "is_translation_enabled" => false
+        //   "profile_background_color" => "F5F8FA"
+        //   "profile_background_image_url" => null
+        //   "profile_background_image_url_https" => null
+        //   "profile_background_tile" => false
+        //   "profile_image_url" => "http://pbs.twimg.com/profile_images/1350802758392135681/bQfcZBtP_normal.jpg"
+        //   "profile_image_url_https" => "https://pbs.twimg.com/profile_images/1350802758392135681/bQfcZBtP_normal.jpg"
+        //   "profile_banner_url" => "https://pbs.twimg.com/profile_banners/1350802661759598599/1612707176"
+        //   "profile_link_color" => "1DA1F2"
+        //   "profile_sidebar_border_color" => "C0DEED"
+        //   "profile_sidebar_fill_color" => "DDEEF6"
+        //   "profile_text_color" => "333333"
+        //   "profile_use_background_image" => true
+        //   "has_extended_profile" => true
+        //   "default_profile" => true
+        //   "default_profile_image" => false
+        //   "pinned_tweet_ids" => []
+        //   "pinned_tweet_ids_str" => []
+        //   "has_custom_timelines" => false
+        //   "can_media_tag" => false
+        //   "followed_by" => false
+        //   "following" => true
+        //   "follow_request_sent" => false
+        //   "notifications" => false
+        //   "muting" => false
+        //   "advertiser_account_type" => "none"
+        //   "advertiser_account_service_levels" => []
+        //   "analytics_type" => "disabled"
+        //   "business_profile_state" => "none"
+        //   "translator_type" => "none"
+        //   "require_some_consent" => false
+        // ]
+
+        // ダイレクトメッセージ
+        $client->get('/direct_messages/events/list.json', [
+            'count' => 3,
+            // 'cursor ' => null,
+        ]);
+        $result = $client->getContentAs('json.array');
+        dd($result);
 
         // 自分の発言と相手へのメンション
         $client->get('/statuses/user_timeline', [
