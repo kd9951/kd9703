@@ -21,14 +21,14 @@ Artisan::command('app:update-users {limit_sec=50}', function (
         $MediaBinder->bind($account);
 
         $job = new Job([
-            'media' => $account->media,
+            'media'      => $account->media,
             'account_id' => $account->account_id,
-            'job_id' => time(),
-            'job_class' => 'app:update-users'
+            'job_id'     => time(),
+            'job_class'  => 'app:update-users',
         ]);
         $systemLogger->startJob($job, time());
         $ownerLogger->startJob($job, time());
-        
+
         $UpdateUsers = app(\Kd9703\Usecases\UpdateUsers::class);
 
         $result = ($UpdateUsers)([
@@ -74,10 +74,10 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
         $systemLogger->info("UpdateUsingUser selected {$account->username}({$account->account_id}) last updated at {$reviewed_as_using_user_at}.");
 
         $job = new Job([
-            'media' => $account->media,
+            'media'      => $account->media,
             'account_id' => $account->account_id,
-            'job_id' => time(),
-            'job_class' => 'app:update-using-user'
+            'job_id'     => time(),
+            'job_class'  => 'app:update-using-user',
         ]);
         $systemLogger->startJob($job, time());
         $ownerLogger->startJob($job, time());
@@ -119,14 +119,14 @@ Artisan::command('app:get-new-users {limit_sec=15}', function (
         $MediaBinder->bind($account);
 
         $job = new Job([
-            'media' => $account->media,
+            'media'      => $account->media,
             'account_id' => $account->account_id,
-            'job_id' => time(),
-            'job_class' => 'app:get-new-users'
+            'job_id'     => time(),
+            'job_class'  => 'app:get-new-users',
         ]);
         $systemLogger->startJob($job, time());
         $ownerLogger->startJob($job, time());
-    
+
         $GetNewUsers = app(\Kd9703\Usecases\GetNewUsers::class);
 
         $result = ($GetNewUsers)([
@@ -420,10 +420,10 @@ Artisan::command('app:test', function (
     $MediaBinder->bind($account);
 
     $job = new Job([
-        'media' => $account->media,
+        'media'      => $account->media,
         'account_id' => $account->account_id,
-        'job_id' => time(),
-        'job_class' => 'app:test'
+        'job_id'     => time(),
+        'job_class'  => 'app:test',
     ]);
     $systemLogger->startJob($job, time());
     $ownerLogger->startJob($job, time());
@@ -504,16 +504,16 @@ Artisan::command('app:test-media-access', function (
 
     //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\DenyFollowerIncoming::class);
-    $result   = ($GetFollowersIncomingInterface)([
-        'account'        => $account,
+    $result                        = ($GetFollowersIncomingInterface)([
+        'account'           => $account,
         'target_account_id' => 763553497337868288,
     ]);
     dd($result->toArray());
 
     //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\AcceptFollowerIncoming::class);
-    $result   = ($GetFollowersIncomingInterface)([
-        'account'        => $account,
+    $result                        = ($GetFollowersIncomingInterface)([
+        'account'           => $account,
         'target_account_id' => 1349289029754179584,
     ]);
     dd($result->toArray());
@@ -528,8 +528,8 @@ Artisan::command('app:test-media-access', function (
 
     //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\GetFollowersIncoming::class);
-    $result   = ($GetFollowersIncomingInterface)([
-        'account'        => $account,
+    $result                        = ($GetFollowersIncomingInterface)([
+        'account' => $account,
     ]);
     dd($result->pluck('account_id'));
 
