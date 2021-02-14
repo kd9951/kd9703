@@ -81,12 +81,13 @@ class CommunicationController extends BaseController
         }
 
         return view('communications', [
-            'title'                => $title,
-            'title_en'             => $title_en,
-            'communicatated_posts' => $communicatated_posts,
-            'username'             => $username,
-            'username_partial'     => $username_partial,
-            'keyword'              => $keyword,
+            'title'                     => $title,
+            'title_en'                  => $title_en,
+            'communicatated_posts'      => $communicatated_posts,
+            'username'                  => $username,
+            'username_partial'          => $username_partial,
+            'keyword'                   => $keyword,
+            'reviewed_as_using_user_at' => $account->reviewed_as_using_user_at,
         ]);
     }
 }

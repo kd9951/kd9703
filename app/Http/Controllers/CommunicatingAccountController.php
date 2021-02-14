@@ -47,12 +47,13 @@ class CommunicatingAccountController extends BaseController
         $title_en = "Communicating Accounts";
 
         return view('communicating-accounts', [
-            'title'                   => $title,
-            'title_en'                => $title_en,
-            'communicatated_accounts' => $communicatated_accounts,
-            'username'                => $username,
-            'username_partial'        => $username_partial ?? '',
-            'keyword'                 => $keyword ?? '',
+            'title'                     => $title,
+            'title_en'                  => $title_en,
+            'communicatated_accounts'   => $communicatated_accounts,
+            'username'                  => $username,
+            'username_partial'          => $username_partial ?? '',
+            'keyword'                   => $keyword ?? '',
+            'reviewed_as_using_user_at' => $account->reviewed_as_using_user_at,
         ]);
     }
 }
