@@ -382,6 +382,16 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                         <button type="submit" class="btn-block btn btn-primary">検索</button>
                     </form>
                 </div>
+
+                <div class="mt-4 text-align-right" style="text-align: right;">
+                    <div class="small text-muted">コミュニケーション情報 最終確認日時</div>
+                    {{$reviewed_as_using_user_at}}
+                    <strong>
+                        <span class="relative">{{str_replace('ago','',(new Carbon\Carbon($reviewed_as_using_user_at))->diffForHumans())}}</span>
+                    </strong>
+                </div>
+
+
             </div>
         </div>
     </div>

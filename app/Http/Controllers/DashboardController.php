@@ -88,6 +88,7 @@ class DashboardController extends BaseController
             'recent_communicatated_accounts' => $recent_communicatated_accounts,
             'recent_communicatated_posts'    => $recent_communicatated_posts,
             'kpis'                           => $kpis,
+            'reviewed_as_using_user_at'      => $account->reviewed_as_using_user_at,
         ]);
     }
 }
