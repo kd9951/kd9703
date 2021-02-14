@@ -8,6 +8,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Kd9703\Constants\LogLevel;
+use Kd9703\Eloquents\Support\OwnerLog;
 use Kd9703\Entities\Paginate\Input as PaginateInput;
 use Kd9703\Entities\Sort\Inputs as SortInputs;
 use Kd9703\Resources\Interfaces\Account\Account;
@@ -76,6 +78,24 @@ class DashboardController extends BaseController
                 'order' => 'desc',
             ]]));
 
+        // ログ（通知）
+        $owner_logs = OwnerLog::query()
+            ->orderBy('id', 'desc')
+            ->take(5)
+            ->whereIn('level', [
+                // LogLevel::DEBUG,
+                // LogLevel::INFO,
+                LogLevel::NOTICE,
+                // LogLevel::MEDIA_ACCESS,
+                // LogLevel::JOB,
+                LogLevel::WARNING,
+                LogLevel::ERROR,
+                LogLevel::CRITICAL,
+                LogLevel::ALERT,
+                LogLevel::EMERGENCY,
+            ])
+            ->get();
+
         // KPI
         $kpis = $KpiResource->getList(
             Carbon::parse('-14 days')->format('Y-m-d'),
@@ -87,6 +107,7 @@ class DashboardController extends BaseController
             'recent_accounts'                => $recent_accounts,
             'recent_communicatated_accounts' => $recent_communicatated_accounts,
             'recent_communicatated_posts'    => $recent_communicatated_posts,
+            'owner_logs'                     => $owner_logs,
             'kpis'                           => $kpis,
             'reviewed_as_using_user_at'      => $account->reviewed_as_using_user_at,
         ]);

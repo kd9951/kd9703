@@ -40,7 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/configuration', 'ConfigurationController@update')->name('configuration.update');
 
     Route::resource('/system_logs', 'SystemLogController')->only(['index', 'show']);
-    Route::resource('/owner_logs', 'OwnerLogController')->only(['index', 'show']);
+    Route::resource('/owner_logs', 'OwnerLogController')->only(['index']);
     // Route::resource('/engagements', 'EngagementController')->only(['index']);
 
     Route::get('/communications/{username?}', 'CommunicationController@index')->name('communications.index');
