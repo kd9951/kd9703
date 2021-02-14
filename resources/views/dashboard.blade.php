@@ -364,7 +364,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                 <div class="d-flex justify-content-between mb-3">
                     <div>
                         <h4 class="card-title mb-0">コミュニケーション検索</h4>
-                        <div class="small text-muted">Account Search</div>
+                        <div class="small text-muted">Communication Search</div>
                     </div>
                 </div>
                 <div>
