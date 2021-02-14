@@ -18,9 +18,9 @@ class GetFollowersIncoming extends MediaAccess implements GetFollowersIncomingIn
     /**
      * @param  Account $account
      * @param  Account $target_account
-     * @return array   $account_ids
+     * @return Accounts   $accounts
      */
-    public function exec(Account $account): array
+    public function exec(Account $account): Accounts
     {
         $this->wait->waitNormal('twitter.GetFollowersIncoming', 0, 0);
 
@@ -42,6 +42,15 @@ class GetFollowersIncoming extends MediaAccess implements GetFollowersIncomingIn
             $account_ids = $response_json_array['ids'] ?? [];
         }
 
-        return $account_ids;
+        // パッキング
+        $accounts = new Accounts([]);
+        foreach($account_ids as $account_id) {
+            $accounts[] = [
+                'media'      => $account->media,
+                'account_id' => $account_id,
+            ];
+        }
+
+        return $accounts;
     }
 }
