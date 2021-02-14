@@ -201,6 +201,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
     </div>
     @endif
 
+{{--
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -231,7 +232,6 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
                                 Kd9703\Constants\LogLevel::ALERT =>        'danger',
                                 Kd9703\Constants\LogLevel::EMERGENCY =>    'danger',
                             ][$log['level']]}}">{{strtoupper($log['level'])}}</span></td>
-                            {{-- <td>{{mb_strimwidth($log['message'], 0, 120, '......')}}</td> --}}
                             <td>{{$log['message']}}</td>
                         </tr>
                         @endforeach
@@ -241,6 +241,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
         </div>
     </div>
 </div>
+--}}
 
 <div class="row">
     <div class="col-md-6 col-xl-4">
