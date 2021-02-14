@@ -51,6 +51,7 @@ class MediaFactory
             \Crawler\ParserInterface::class     => \Crawler\Parsers\Json::class,
 
             \Kd9703\MediaAccess\Interfaces\AcceptFollowerIncoming::class => \Kd9703\MediaAccess\Twitter\AcceptFollowerIncoming::class,
+            \Kd9703\MediaAccess\Interfaces\DenyFollowerIncoming::class   => \Kd9703\MediaAccess\Twitter\DenyFollowerIncoming::class,
             \Kd9703\MediaAccess\Interfaces\GetUsers::class               => \Kd9703\MediaAccess\Twitter\GetUsers::class,
             \Kd9703\MediaAccess\Interfaces\GetProfile::class             => \Kd9703\MediaAccess\Twitter\GetProfile::class,
             \Kd9703\MediaAccess\Interfaces\GetFollowers::class           => \Kd9703\MediaAccess\Twitter\GetFollowers::class,

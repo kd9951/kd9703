@@ -431,6 +431,14 @@ Artisan::command('app:test-media-access', function (
     $MediaBinder->bind($account);
 
     //////////////////////////////////////////////////////////
+    $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\DenyFollowerIncoming::class);
+    $result   = ($GetFollowersIncomingInterface)([
+        'account'        => $account,
+        'target_account_id' => 763553497337868288,
+    ]);
+    dd($result->toArray());
+
+    //////////////////////////////////////////////////////////
     $GetFollowersIncomingInterface = app(\Kd9703\MediaAccess\Twitter\AcceptFollowerIncoming::class);
     $result   = ($GetFollowersIncomingInterface)([
         'account'        => $account,
