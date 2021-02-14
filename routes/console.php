@@ -70,6 +70,9 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
 
         $MediaBinder->bind($account);
 
+        $reviewed_as_using_user_at = $account->reviewed_as_using_user_at ?? 'NULL';
+        $systemLogger->info("UpdateUsingUser selected {$account->username}({$account->account_id}) last updated at {$reviewed_as_using_user_at}.");
+
         $job = new Job([
             'media' => $account->media,
             'account_id' => $account->account_id,
@@ -78,9 +81,6 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
         ]);
         $systemLogger->startJob($job, time());
         $ownerLogger->startJob($job, time());
-                
-        $reviewed_as_using_user_at = $account->reviewed_as_using_user_at ?? 'NULL';
-        $systemLogger->info("UpdateUsingUser selected {$account->username}({$account->account_id}) last updated at {$reviewed_as_using_user_at}.");
 
         $UpdateUsers = app(\Kd9703\Usecases\UpdateUsingUser::class);
 
