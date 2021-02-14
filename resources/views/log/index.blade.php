@@ -29,16 +29,16 @@
                             <tr>
                                 <td><a href="{{route($logname . '.show', [substr($logname,0,strlen($logname)-1)=>$log['id']])}}">{{$log['created_at']}}</a></td>
                                 <td><span class="badge bg-{{[
-                                    Glover\Constants\LogLevel::DEBUG =>        'light',
-                                    Glover\Constants\LogLevel::INFO =>         'lighinfo',
-                                    Glover\Constants\LogLevel::NOTICE =>       'success',
-                                    Glover\Constants\LogLevel::MEDIA_ACCESS => 'secondary',
-                                    Glover\Constants\LogLevel::JOB =>          'dark',
-                                    Glover\Constants\LogLevel::WARNING =>      'warning',
-                                    Glover\Constants\LogLevel::ERROR =>        'danger',
-                                    Glover\Constants\LogLevel::CRITICAL =>     'danger',
-                                    Glover\Constants\LogLevel::ALERT =>        'danger',
-                                    Glover\Constants\LogLevel::EMERGENCY =>    'danger',
+                                    Kd9703\Constants\LogLevel::DEBUG =>        'light',
+                                    Kd9703\Constants\LogLevel::INFO =>         'light',
+                                    Kd9703\Constants\LogLevel::NOTICE =>       'success',
+                                    Kd9703\Constants\LogLevel::MEDIA_ACCESS => 'secondary',
+                                    Kd9703\Constants\LogLevel::JOB =>          'dark',
+                                    Kd9703\Constants\LogLevel::WARNING =>      'warning',
+                                    Kd9703\Constants\LogLevel::ERROR =>        'danger',
+                                    Kd9703\Constants\LogLevel::CRITICAL =>     'danger',
+                                    Kd9703\Constants\LogLevel::ALERT =>        'danger',
+                                    Kd9703\Constants\LogLevel::EMERGENCY =>    'danger',
                                 ][$log['level']]}}">{{$log['level']}}</span></td>
                                 <td>{{$log['job_id']}}</td>
                                 <td>{{$log['owner_id']}}</td>
