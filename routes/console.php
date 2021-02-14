@@ -174,6 +174,30 @@ Artisan::command('app:update-kpi', function (
     }
 });
 
+Artisan::command('app:daily', function (
+    \Kd9703\Logger\Interfaces\SystemLogger $systemLogger
+) {
+    try {
+        $systemLogger->notice("Daily Batch.");
+
+        $systemLogger->info("Deleting logs.");
+        Kd9703\Eloquents\Support\OwnerLog::where('created_at', '<', date('Y-m-d 00:00:00', strtotime('-7 days')))->delete();
+        Kd9703\Eloquents\Support\SystemLog::where('created_at', '<', date('Y-m-d 00:00:00', strtotime('-7 days')))->delete();
+        $systemLogger->info("Deleted logs.");
+
+    } catch (\Throwable $e) {
+
+        $systemLogger->error($e->getMessage(), [
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+            'code' => $e->getCode(),
+            'body' => (string) $e,
+        ]);
+
+        echo (string) $e;
+    }
+});
+
 // // --------------------------------- 以下テストコマンド
 
 // /**
