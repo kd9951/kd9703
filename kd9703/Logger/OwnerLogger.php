@@ -105,6 +105,10 @@ class OwnerLogger implements OwnerLoggerInterface
         if (rand(0, $ratio - 1) == 0) {
             $this->deleteOld();
         }
+
+        $date    = date('Y-m-d H:i:s');
+        $message = preg_replace('/\s+/', ' ', $message);
+        echo "$date OWNER [$level] $message\n";
     }
 
     protected function deleteOld()
