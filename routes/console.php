@@ -64,9 +64,9 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
     \Kd9703\MediaBinder $MediaBinder
 ) {
     try {
-        // $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
+        $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
         // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
-        $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+        // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
 
         $MediaBinder->bind($account);
 
