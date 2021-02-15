@@ -1,7 +1,6 @@
 <?php
 namespace Kd9703\MediaAccess\Twitter;
 
-use Carbon\Carbon;
 use Kd9703\Entities\Media\Account;
 use Kd9703\MediaAccess\Interfaces\AcceptFollowerIncoming as AcceptFollowerIncomingInterface;
 use Kd9703\MediaAccess\Twitter\Tools\FormatUserObjectForAccount;
@@ -22,7 +21,7 @@ class AcceptFollowerIncoming extends MediaAccess implements AcceptFollowerIncomi
      */
     public function exec(Account $account, string $target_account_id): Account
     {
-        $this->wait->waitNormal('twitter.AcceptFollowerIncoming', 0, 0);
+        $this->wait->waitNormal('twitter.AcceptFollowerIncoming', 200, 800);
 
         $url   = self::ENDPOINT_ACCEPT;
         $param = [
