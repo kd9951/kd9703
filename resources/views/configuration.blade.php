@@ -18,6 +18,8 @@
                             <div class="row mb-3">
                                 <div class="col-md-7">
                                     このアプリを通じて他のサロンメンバーが自動フォローすることを禁止する
+                                    <div class="text-info mb-2"><small>現在、自動フォロー機能は実装されていないので将来的な機能です。</small></div>
+
                                 </div>
                                 <div class="col-md-5">
                                 <input type="hidden" name="hidden_from_auto_follow" value="off">
@@ -83,6 +85,74 @@
                                         <input class="form-control" type="number" name="show_new_days" value="{{$configuration->show_new_days}}" placeholder="" autocomplete="off">
                                         <div class="input-group-append"><span class="input-group-text">日前から</span></div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-4">
+                            <div>
+                                <h4 class="card-title mb-0">自動的にフォローリクエストを承認する</h4>
+                                <div class="small text-muted">他のサロンメンバーさんからフォロー／フォローバックされたときに自動的に承認します</div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    <b>自動承認を有効にする</b>
+                                    <div class="text-info mb-2"><small>対象のアカウントを自動的に承認します。対象外の場合はスルーしますので、不要であれば下の「自動拒否」も併用してください。</small></div>
+                                </div>
+                                <div class="col-md-5">
+                                <input type="hidden" name="auto_follow_back" value="off">
+                                <label class="c-switch c-switch-label c-switch-opposite-info">
+                                    <input class="c-switch-input" type="checkbox" {{$configuration->auto_follow_back ? 'checked="checked"' : ''}} name="auto_follow_back"><span class="c-switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                </label>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    <b class="text-danger">自動拒否を有効にする</b>
+                                    <div class="text-info mb-2"><small>自動承認と反対に、対象外のリクエストを削除します。フォローしてくれたメンバーさんは自分でチェックして自動承認したいが、メンバー以外（公開アカウントなど）からのリクエストは間違って承認しないために削除したいケースにご利用ください。</small></div>
+                                </div>
+                                <div class="col-md-5">
+                                <input type="hidden" name="auto_reject" value="off">
+                                <label class="c-switch c-switch-label c-switch-opposite-info">
+                                    <input class="c-switch-input" type="checkbox" {{$configuration->auto_reject ? 'checked="checked"' : ''}} name="auto_reject"><span class="c-switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-5 mb-4">
+                            <div>
+                                <h4 class="card-title mb-0">自動承認対象のアカウント</h4>
+                                <div class="small text-muted">基本的には公式ルールの「鍵アカウントとアカウント名」に準じたアカウントのみが対象です。さらに条件を追加して対象アカウントを絞り込むことができます。</div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    １回以上ツイートしている
+                                </div>
+                                <div class="col-md-5">
+                                <input type="hidden" name="follow_back_only_tweets_more_than" value="off">
+                                <label class="c-switch c-switch-label c-switch-opposite-info">
+                                    <input class="c-switch-input" type="checkbox" {{$configuration->follow_back_only_tweets_more_than ? 'checked="checked"' : ''}} name="follow_back_only_tweets_more_than"><span class="c-switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                </label>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-7">
+                                    プロフィールにキーワードを含む
+                                    <div class="text-info mb-2"><small>スペース区切りで複数のキーワードを指定でき、すべて含む場合のみ対象とします。</small></div>
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" type="text" name="follow_back_only_profile_contains" value="{{$configuration->follow_back_only_profile_contains}}" placeholder="" autocomplete="off">
                                 </div>
                             </div>
                         </div>

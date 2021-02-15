@@ -201,7 +201,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
     </div>
     @endif
 
-{{--
+@if($owner_logs->count())
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -241,7 +241,7 @@ $show_new_date = Carbon\Carbon::parse('-' . Auth::user()->config('show_new_days'
         </div>
     </div>
 </div>
---}}
+@endif
 
 <div class="row">
     <div class="col-md-6 col-xl-4">

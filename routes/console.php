@@ -61,11 +61,11 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
     \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger,
     \Kd9703\Resources\Interfaces\Account\Account $Account,
+    Kd9703\Resources\Interfaces\Owner\Configuration $Configuration,
     \Kd9703\MediaBinder $MediaBinder
 ) {
     try {
         $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
-        // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
         // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
 
         $MediaBinder->bind($account);
@@ -82,11 +82,28 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
         $systemLogger->startJob($job, time());
         $ownerLogger->startJob($job, time());
 
+        ///////////////////////////////////////////////////////////////////////
+        // コミュニケーション更新
         $UpdateUsers = app(\Kd9703\Usecases\UpdateUsingUser::class);
 
         $result = ($UpdateUsers)([
             'account'   => $account,
             'limit_sec' => $this->argument('limit_sec'),
+        ]);
+
+        ///////////////////////////////////////////////////////////////////////
+        // 自動フォロー承認
+        $config = $Configuration->get($account);
+
+        $AutoFollowAccept = app(\Kd9703\Usecases\AutoFollowAccept::class);
+
+        $result = ($AutoFollowAccept)([
+            'account'                           => $account,
+            'limit_sec'                         => 30,
+            'auto_follow_back'                  => $config->auto_follow_back,
+            'auto_reject'                       => $config->auto_reject,
+            'follow_back_only_tweets_more_than' => $config->follow_back_only_tweets_more_than,
+            'follow_back_only_profile_contains' => $config->follow_back_only_profile_contains,
         ]);
 
     } catch (\Throwable $e) {
@@ -434,12 +451,15 @@ Artisan::command('app:daily', function (
  */
 Artisan::command('app:test', function (
     \Kd9703\Resources\Interfaces\Account\Account $Account,
+    Kd9703\Resources\Interfaces\Owner\Configuration $Configuration,
     \Kd9703\MediaBinder $MediaBinder,
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
     \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger
 ) {
     $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
     // $account = $Account->getOne(Media::TWITTER(), '1259724960664174592'); // 立花さん
+
+    $config = $Configuration->get($account);
 
     $MediaBinder->bind($account);
 
@@ -456,8 +476,12 @@ Artisan::command('app:test', function (
     $AutoFollowAccept = app(\Kd9703\Usecases\AutoFollowAccept::class);
 
     $result = ($AutoFollowAccept)([
-        'account'   => $account,
-        'limit_sec' => 30,
+        'account'                           => $account,
+        'limit_sec'                         => 30,
+        'auto_follow_back'                  => $config->auto_follow_back,
+        'auto_reject'                       => $config->auto_reject,
+        'follow_back_only_tweets_more_than' => $config->follow_back_only_tweets_more_than,
+        'follow_back_only_profile_contains' => $config->follow_back_only_profile_contains,
     ]);
     dd($result);
 

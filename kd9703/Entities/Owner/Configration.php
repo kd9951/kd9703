@@ -55,7 +55,7 @@ class Configration extends Entity
         // フォロワーのサロン垢ルールチェック
         'follow_back_only_official_regulation' => ['bool', true], // 公式ルールに準拠したアカウントのみフォローを承認
         'follow_back_only_set_icon'            => ['bool', false], // アイコンを設定しているアカウントのみフォロー
-        'follow_back_only_tweets_more_than'    => ['integer', 0], // 最低ツイート数
+        'follow_back_only_tweets_more_than'    => ['integer', -1], // 最低ツイート数 制限しないなら（ゼロでもOKなら）負の値
         'follow_back_only_profile_contains'    => ['string', ''], // プロフにこれらの言葉のどれかを含むアカウントのみフォロー（サロン垢ルール）
     ];
 }
