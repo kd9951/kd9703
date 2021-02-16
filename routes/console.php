@@ -2,6 +2,7 @@
 
 use Crawler\HttpClients\TwitterApi;
 use Illuminate\Support\Facades\Artisan;
+use Kd9703\Constants\LoginMethod;
 use Kd9703\Constants\Media;
 use Kd9703\Entities\Media\Account;
 use Kd9703\Entities\Worker\Job;
@@ -57,7 +58,7 @@ Artisan::command('app:update-users {limit_sec=50}', function (
 /**
  * 利用中アカウントの非公開情報を含んだ詳細情報を取得・更新
  */
-Artisan::command('app:update-using-user {limit_sec=50}', function (
+Artisan::command('app:update-using-user {limit_sec=50} {--a|account_id=}', function (
     \Kd9703\Logger\Interfaces\SystemLogger $systemLogger,
     \Kd9703\Logger\Interfaces\OwnerLogger $ownerLogger,
     \Kd9703\Resources\Interfaces\Account\Account $Account,
@@ -65,8 +66,19 @@ Artisan::command('app:update-using-user {limit_sec=50}', function (
     \Kd9703\MediaBinder $MediaBinder
 ) {
     try {
-        $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
-        // $account = $Account->getOne(Media::TWITTER(), config('services.twitter.owner_twitter_id'));
+        if ($account_id = $this->option('account_id')) {
+            $account = $Account->getOne(Media::TWITTER(), $account_id);
+            if (! $account) {
+                $this->error("Account $account_id not found.");
+                return;
+            }
+            if (! $account->login_method) {
+                $this->error("Account $account_id is not a using account.");
+                return;
+            }
+        } else {
+            $account = $Account->getUsingAccountToBeUpdatedNext(Media::TWITTER(), 1)[0] ?? null;
+        }
 
         $MediaBinder->bind($account);
 
