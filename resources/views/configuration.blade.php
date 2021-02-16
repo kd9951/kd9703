@@ -91,6 +91,7 @@
                     </div>
                 </div>
 
+                {{--
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-4">
@@ -158,6 +159,7 @@
                         </div>
                     </div>
                 </div>
+                --}}
 
                 <div class="container">
                     <div class="row">
