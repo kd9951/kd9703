@@ -19,7 +19,7 @@ class AcceptFollowerIncoming extends MediaAccess implements AcceptFollowerIncomi
      * @param  Account $target_account
      * @return mixed
      */
-    public function exec(Account $account, string $target_account_id): Account
+    public function exec(Account $account, string $target_account_id): ?Account
     {
         $this->wait->waitNormal('twitter.AcceptFollowerIncoming', 200, 800);
 
@@ -36,10 +36,10 @@ class AcceptFollowerIncoming extends MediaAccess implements AcceptFollowerIncomi
         if ($this->client->getResponseStatusCode() == 410) {
             // エンドポイントが存在しない Twitter For Mac じゃない一般アプリとして承認したトークン
             $this->system_logger->warning('cannot exec accepting. endpoint not found.', compact('url', 'param', 'response_json_array'));
-            $formatted = [];
+            return null;
         } elseif (!is_array($response_json_array)) {
             $this->system_logger->error(self::ENDPOINT_ACCEPT . ' returns invalid json.', compact('url', 'param', 'response_json_array'));
-            $formatted = [];
+            return null;
         } else {
             $formatted = $this->FormatUserObjectForAccount($response_json_array);
         }

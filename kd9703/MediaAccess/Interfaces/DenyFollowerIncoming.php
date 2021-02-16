@@ -11,9 +11,9 @@ interface DenyFollowerIncoming extends StrictInvokatorInterface
 {
     /**
      * フォローリクエストを承認
-     * @param Account $account
-     * @param string $target_account_id
+     * @param  Account   $account
+     * @param  string    $target_account_id
      * @return Account
      */
-    public function exec(Account $account, string $target_account_id): Account;
+    public function exec(Account $account, string $target_account_id): ?Account;
 }

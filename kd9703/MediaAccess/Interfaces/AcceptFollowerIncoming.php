@@ -11,14 +11,14 @@ interface AcceptFollowerIncoming extends StrictInvokatorInterface
 {
     /**
      * フォローリクエストを承認
-     * 
+     *
      * MEMO たまたまTwitterは結果としてユーザーオブジェクトを返すが、
      * ユーザー内容は予め調査済だし、他のメディアがユーザーを返すかもわからないので、
      * 可否だけで良いとは思う
      *
-     * @param Account $account
-     * @param string $target_account_id
+     * @param  Account   $account
+     * @param  string    $target_account_id
      * @return Account
      */
-    public function exec(Account $account, string $target_account_id): Account;
+    public function exec(Account $account, string $target_account_id): ?Account;
 }

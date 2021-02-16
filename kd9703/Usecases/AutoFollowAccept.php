@@ -123,23 +123,31 @@ final class AutoFollowAccept extends Usecase
             if ($this->matched($target_account, $follow_back_only_tweets_more_than, $follow_back_only_profile_contains)) {
                 // 承認
                 if ($auto_follow_back) {
-                    $target_accounts = $this->mediaAccesses['AcceptFollowerIncoming']([
+                    $result = $this->mediaAccesses['AcceptFollowerIncoming']([
                         'account'           => $account,
                         'target_account_id' => $target_account->account_id,
                     ]);
-                    $count_accept++;
-                    $this->ownerLogger->info("{$target_account->fullname}（@{$target_account->username}）さんのフォローリクエストを承認しました。");
+                    if ($result) {
+                        $count_accept++;
+                        $this->ownerLogger->info("{$target_account->fullname}（@{$target_account->username}）さんのフォローリクエストを承認しました。");
+                    } else {
+                        $this->systemLogger->debug("{$account->username}({$account->account_id}) から {$target_account->username}({$target_account->account_id}) への自動承認に失敗");
+                    }
                 }
 
             } else {
                 // 拒否
                 if ($auto_reject) {
-                    $target_accounts = $this->mediaAccesses['DenyFollowerIncoming']([
+                    $result = $this->mediaAccesses['DenyFollowerIncoming']([
                         'account'           => $account,
                         'target_account_id' => $target_account->account_id,
                     ]);
-                    $count_deny++;
-                    $this->ownerLogger->notice("{$target_account->fullname}（@{$target_account->username}）さんのフォローリクエストは条件にマッチしなかったため拒否しました。");
+                    if ($result) {
+                        $count_deny++;
+                        $this->ownerLogger->notice("{$target_account->fullname}（@{$target_account->username}）さんのフォローリクエストは条件にマッチしなかったため拒否しました。");
+                    } else {
+                        $this->systemLogger->debug("{$account->username}({$account->account_id}) から {$target_account->username}({$target_account->account_id}) への自動承認に失敗");
+                    }
                 } else {
                     $this->ownerLogger->warning("{$target_account->fullname}（@{$target_account->username}）さんのフォローリクエストは承認条件にマッチしていません。");
                 }
