@@ -14,6 +14,21 @@ use Kd9703\Usecases\SetGlobalAccountRegulation as BaseSetGlobalAccountRegulation
  */
 final class SetGlobalAccountRegulation extends BaseSetGlobalAccountRegulation
 {
+    const PATTERNS = [
+        'PROGRESS',
+        // 50アカウントの実例から抽出したよくあるスペルミスパターン
+        'PRGRESS',
+        'PROFRESS',
+        'PROGESS',
+        'PROGGRES',
+        'PROGLESS',
+        'PROGPESS',
+        'PROGREES',
+        'PROGRES',
+        'PROGRSS',
+        'PROGSESS',
+    ];
+
     /**
      * 依存オブジェクトを受け取る
      */
@@ -31,11 +46,13 @@ final class SetGlobalAccountRegulation extends BaseSetGlobalAccountRegulation
      */
     public function exec(Account $account): Account
     {
+        $pattern = implode('|', self::PATTERNS);
+
         $account->is_salon_account =
         // 鍵アカウントである
         $account->is_private
         // 名前が progress で始まっている
-         && preg_match('/^progress.*/i', $account->username)
+         && preg_match("/^($pattern).*/i", $account->username)
         // 本名
         // 「#中田敦彦オンラインサロン」のタグがある
         ;
